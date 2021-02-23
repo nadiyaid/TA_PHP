@@ -102,61 +102,77 @@
             <div class="container">
                 <div class="row py-2">
                     <div class="col-md-4 py-3">
-                        <div class="header undone-task">
-                            <h5>UNDONE</h5>
+                        <div class="header undone-task px-2">
+                            <h5>Undone</h5>
+                            <div class="underline"></div>
+                            <!-- <a href="#" class="btn" style="border-radius: 50%; margin-left: 10em;margin-top:-10px;padding: 5px 5px; font-size: 15pt; vertical-align: middle;">+</a> -->
                         </div>
-                        <div class="card" data-toggle="modal" data-target="#taskModal">
-                            <div class="card-body">
-                                <h5>Bikin Tampilan Web</h5>
-                                <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                <a href="#" class="stretched-link"></a>
-                                <div class="footer text-muted">
-                                    2 days ago
+                        <div class="card taskundone" data-toggle="modal" data-target="#taskModal">
+                            <div class="card-body tasklist">
+                                <div class="card task1">
+                                    <div class="card-body">
+                                        <h5>Bikin Tampilan Web</h5>
+                                        <p>Bikin tampilan program web pake html css bootstrap react</p>
+                                        <a href="#" class="stretched-link"></a>
+                                        <div class="footer text-muted">
+                                            2 Feb - 7 Feb
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 py-3">
-                        <div class="header progress-task">
-                            <h5>INPROGRESS</h5>
+                        <div class="header progress-task px-2">
+                            <h5>Inprogress</h5>
+                            <div class="underline"></div>
                         </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5>Bikin Tampilan Web</h5>
-                                <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                <div class="footer text-muted">
-                                    2 days ago
+                        <div class="card taskundone">
+                            <div class="card-body tasklist">
+                                <div class="card task1">
+                                    <div class="card-body">
+                                        <h5>Bikin Tampilan Web</h5>
+                                        <p>Bikin tampilan program web pake html css bootstrap react</p>
+                                        <div class="footer text-muted">
+                                            2/2/21 - 7/2/21
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 py-3">
-                        <div class="header complete-task">
-                            <h5>COMPLETED</h5>
+                        <div class="header complete-task px-2">
+                            <h5>Completed</h5>
+                            <div class="underline"></div>
                         </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5>Bikin Tampilan Web</h5>
-                                <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                <a href="#" class="stretched-link"></a>
-                                <div class="footer text-muted">
-                                    2 days ago
+                        <div class="card taskundone">
+                            <div class="card-body tasklist">
+                                <div class="card task1">
+                                    <div class="card-body">
+                                        <h5>Bikin Tampilan Web</h5>
+                                        <p>Bikin tampilan program web pake html css bootstrap react</p>
+                                        <a href="#" class="stretched-link"></a>
+                                        <div class="footer text-muted">
+                                            2/2/21 - 7/2/21
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                     <!-- Modal -->
-                     <div id="taskModal" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                    
+                <!-- Modal -->
+                <div id="taskModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="myModalLabel">Task Details</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
@@ -164,12 +180,6 @@
                                     <div class="col-8 px-4">
                                         <div class="task-header d-flex">
                                             <h5>Bikin Tampilan Web</h5>
-                                            <!-- <div id="ck-button">
-                                                <label>
-                                                    <input type="checkbox" value="1">
-                                                    <span class="bi bi-check2 tooltip-test" title="Mark as Done"></span>
-                                                </label>
-                                            </div> -->
                                             <button type="button" id="done" class="btn-cancel tooltip-test" title="Mark as Done">
                                                 <span class="bi bi-check2 "></span>
                                             </button>
@@ -199,22 +209,31 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- <div class="created-info">
-                                            <h6>Updates</h6>
-                                            <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                        </div> -->
                                     </div>
                                 </div>
-                            </div>
+                            </div>                        
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-update">Update</button>
+                                <a href="update-task.php" class="btn btn-primary">Update</a>
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
     <!--/#wrapper-->
+
+    <script>
+        $("#done").click(function() {
+            $(this).toggleClass('red');
+        });
+        jQuery(function($) {
+            $('#done').on('click', function() {
+                var $el = $(this);
+            $el.find('span').toggleClass('bi-check2 bi-x');
+        }
+    )});
+    </script>
 </body>
 </html>

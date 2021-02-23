@@ -124,9 +124,9 @@
                                 <input class="form-control" id="filter" type="text" placeholder="Search..">
                                 <div class="dropdown-content">
                                 <?php
-                                    $q_subt = mysqli_query($config, "SELECT * FROM karyawan ORDER BY nip");
+                                    $q_subt = mysqli_query($config, "SELECT * FROM karyawan");
                                     while ($data_subt = mysqli_fetch_array($q_subt)) {
-                                ?>                                
+                                ?>                         
                                     <a href="rekap-absen.php?nip=<?php echo $data_subt['nip']; ?>"><?php echo $data_subt['nama']; ?></a>
                                 <?php
                                     }
@@ -136,74 +136,70 @@
                         </div>
                     </div>
                 </div>
-                <div class="row pt-4 pb-2">
-                    <div class="col-6">
-                        <div class="card approval">
-                            <h6 class="card-header">Needs Approval</h6>
-                                <div class="card-body pt-2">
-                                    <div class="row newreq">
-                                        <div class="col-12">
-                                            <div class="card" data-toggle="modal" data-target="#appRequest">
-                                                <div class="card-body">
-                                                    <h6><b>Nadiya Ivana</b></h6>
-                                                    <p>Izin (Sidang Tugas Akhir)</p>
-                                                    <a href="#" class="stretched-link"></a>
-                                                    <div class="footer text-muted">
-                                                        2/2/21 - 7/2/21
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <div class="row py-1 newreq">
-                                    <div class="col-12">
-                                        <div class="card" data-toggle="modal" data-target="#appRequest">
-                                            <div class="card-body">
-                                                <h6>Fikri Alfaiq</h6>
-                                                <p>Cuti (Pulang kampung)</p>
-                                                <a href="#" class="stretched-link"></a>
-                                                <div class="footer text-muted">
-                                                    2/2/21 - 7/2/21
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="row table-attendance">
+                    <div class="col-12 mt-4 py-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="header">
+                                    <h5 class="title">Daily Attendance</h5>
+                                    <?php
+                                        $q_subt = mysqli_query($config, "SELECT * FROM karyawan WHERE nip = '$_GET[nip]'");
+                                        $data_subt = mysqli_fetch_array($q_subt)
+                                    ?> 
+                                    <text-muted><?php echo $data_subt['nama']; ?></text-muted>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 pl-1">
-                        <div class="card informasi" style="border: none;">
-                            <div class="card-header pt-4">
-                                <h5 class="card-title">Employee of the Month</h5>
-                                <text-muted class="card-text">Based on attendance</text-muted>
-                            </div>
-                            <div class="card-body py-0 tabinfo">
-                                <table class="table table-hover">
+                                <table class="table table-hover man-att">
                                     <thead>
                                         <tr>
-                                            <th>NAME</th>
-                                            <th>POSITION</th>
-                                            <th class="total_att">TOTAL ATTENDANCE</th>
+                                            <th>DATE</th>
+                                            <th>CHECK-IN</th>
+                                            <th>CHECK-OUT</th>
+                                            <th>TOTAL HOURS</th>
+                                            <th>ACTION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php
+
+                                        if($config->connect_error){
+                                            die("Connection failed: ".$config->connect_error);
+                                        }
+
+                                        $query = "SELECT * FROM absensi WHERE nip = '$_GET[nip]'";
+                                        $query_run = mysqli_query($config, $query);
+                                        while($row = mysqli_fetch_array($query_run)){
+                                    ?>
                                         <tr>
-                                            <td>Nadiya Ivana</td>
-                                            <td><text-muted>Front end</text-muted></td>
-                                            <td class="total_att">
-                                                23
+                                            <td><?php $tgl = $row['tanggal'];
+                                                echo date("D, d-M", strtotime($tgl));
+                                                ?>
+                                            </td>
+                                            <td><?php $jam = $row['waktu_masuk'];
+                                                echo date("H:i:s", strtotime($jam)); ?></td>
+                                            <td><?php echo date("H:i:s", strtotime($row['waktu_pulang'])); ?></td>
+                                            <td><?php echo date("H:i", strtotime($row['jam_kerja']));
+                                                ?> Hours
+                                            </td>
+                                            <td class="details-btn">
+                                                <a href="del-att.php?absen_id=<?php echo $row['absen_id']; ?>" class="btn btn-danger del-att" onClick="hapus()">Delete</a>
+                                                <script>
+                                                    function hapus() {
+                                                        var r = confirm("Are you sure want to delete this record?");
+                                                        if (r == false) {
+                                                            window.close();
+                                                        } else if (r == true) {
+                                                            window.alert("Record successfully deleted!");
+                                                        }
+                                                    }
+                                                </script>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>Fikri Alfaiq</td>
-                                            <td><text-muted>Back end</text-muted></td>
-                                            <td class="total_att">
-                                                19
-                                            </td>
-                                        </tr>       
+                                        
+                                        <?php
+                                            }
+                                        ?>   
                                     </tbody>
-                                </table>                                
+                                </table>
                             </div>
                         </div>
                     </div>

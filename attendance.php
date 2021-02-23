@@ -1,3 +1,6 @@
+<?php
+    include("koneksi.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -104,12 +107,23 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body d-flex">
-                                <button type="button" class="btn btn-info btn-request">
+                                <a href="add-request-user-query.php" type="button" class="btn btn-info btn-request" data-toggle="modal" data-target="#requestModal">
                                     <div class="maintext">Request</div>
                                     <div class="subtext">for paid leave</div>
-                                </button>
-                                <button type="button" class="btn btn-info btn-checkin">Check-In</button>
-                                <button type="button" class="btn btn-info btn-checkout">Check-out</button>
+                                </a>
+                                <a href="add-absen-user.php" id="hide" type="button" class="btn btn-checkin" name="checkin">Check-In</a>
+                                <a href="add-absen-out-user.php" type="button" class="btn btn-danger btn-checkout" onClick="checkout()">Check-out</a>
+
+                                <script>
+                                    function checkout() {
+                                        var r = confirm("Are you sure want to checkout?");
+                                        if (r == false) {
+                                            window.close();
+                                        } else if (r == true) {
+                                            window.alert("Successfully checkout!");
+                                        }
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -132,39 +146,114 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php
+                                        if($config->connect_error){
+                                            die("Connection failed: ".$config->connect_error);
+                                        }
+
+                                        $query = "SELECT * FROM absensi";
+                                        $query_run = mysqli_query($config, $query);
+                                        while($row = mysqli_fetch_array($query_run)){
+                                        ?>
+
                                         <tr>
-                                            <td>11,Jan</td>
-                                            <td>09:45</td>
-                                            <td>17:46</td>
-                                            <td>8:01 Hours</td>
+                                            <td><?php $tgl = $row['tanggal'];
+                                                echo date("D, d-M", strtotime($tgl));
+                                                ?>
+                                            </td>
+                                            <td><?php $jam = $row['waktu_masuk'];
+                                                echo date("H:i:s", strtotime($jam)); ?></td>
+                                            <td><?php echo date("H:i:s", strtotime($row['waktu_pulang'])); ?></td>
+                                            <td><?php echo date("H:i", strtotime($row['jam_kerja']));
+                                                ?> Hours
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td>12,Jan</td>
-                                            <td>09:06</td>
-                                            <td>18:00</td>
-                                            <td>8:54 Hours</td>
-                                        </tr>
-                                        <tr>
-                                            <td>13,Jan</td>
-                                            <td>09:03</td>
-                                            <td>17:34</td>
-                                            <td>8:31 Hours</td>
-                                        </tr>
-                                        <tr>
-                                            <td>14,Jan</td>
-                                            <td>10:00</td>
-                                            <td>18:35</td>
-                                            <td>8:35 Hours</td>
-                                        </tr>
-                                        <tr>
-                                            <td>15,Jan</td>
-                                            <td>09:15</td>
-                                            <td>17:55</td>
-                                            <td>8:40 Hours</td>
-                                        </tr>
+
+                                    <?php
+                                        }
+                                    ?>
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Request for paid leave</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="add-request-user-query.php" method="POST">
+                                <div class="modal-body">                                
+                                    <label class="col-form-label">Request for:</label>
+                                    <div class="form-group radio">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="izin" value="1">
+                                            <label class="form-check-label">
+                                                Izin
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="sakit" value="1">
+                                            <label class="form-check-label">
+                                                Sakit
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="cuti" value="1">
+                                            <label class="form-check-label">
+                                                Cuti
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message-text" class="col-form-label">Excuse:</label>
+                                        <textarea class="form-control" id="message-text" name="keterangan" required></textarea>
+                                    </div>
+                                    <div class="form-group d-flex req-date">
+                                        <div class="fromdate">
+                                            <label class="col-form-label">From:</label>
+                                            <input type="date" class="form-control" id="recipient-name" name="from">
+                                        </div>
+                                        <div class="todate">
+                                            <label class="col-form-label">To:</label>
+                                            <input type="date" class="form-control" id="recipient-name" name="to">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Substitute:</label>
+                                        <select class="form-control" name="pengganti">
+                                        <option selected class="selected"></option>
+                                        <?php
+                                            $q_subt = mysqli_query($config, "SELECT * FROM karyawan ORDER BY nip");
+                                            while ($data_subt = mysqli_fetch_array($q_subt)) {
+                                        ?>                         
+                                            <option value="<?php echo $data_subt['nip']; ?>"><?php echo $data_subt['nama']; ?></option>
+                                        <?php
+                                            }  
+                                        ?>
+                                        </select>
+                                    </div>                                
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" name="request" onClick="request()">Request</button>
+                                    <script>
+                                        function request() {
+                                            var r = confirm("Are you sure want to request leave?");
+                                            if (r == false) {
+                                                window.close();
+                                            } else if (r == true) {
+                                                window.alert("Successfully requested!");
+                                            }
+                                        }
+                                </script>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

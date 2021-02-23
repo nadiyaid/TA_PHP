@@ -102,57 +102,70 @@
             <div class="container">
                 <div class="row py-2">
                     <div class="col-md-4 py-3">
-                        <div class="header undone-task">
-                            <h5>UNDONE</h5>
+                        <div class="header undone-task px-2">
+                            <h5>Undone</h5>
+                            <div class="underline"></div>
+                            <!-- <a href="#" class="btn" style="border-radius: 50%; margin-left: 10em;margin-top:-10px;padding: 5px 5px; font-size: 15pt; vertical-align: middle;">+</a> -->
                         </div>
-                        <div class="card" data-toggle="modal" data-target="#taskModal">
-                            <div class="card-body">
-                                <h5>Bikin Tampilan Web</h5>
-                                <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                <a href="#" class="stretched-link"></a>
-                                <div class="footer text-muted">
-                                    2 days ago
+                        <div class="card taskundone">
+                            <div class="card-body tasklist">
+                                <div class="card task1">
+                                    <div class="card-body" style="cursor:pointer" data-toggle="modal" data-target="#taskModal">
+                                        <h5>Bikin Tampilan Web</h5>
+                                        <p>Bikin tampilan program web pake html css bootstrap react</p>
+                                    </div>
+                                    <div class="card-footer text-muted d-flex">
+                                        2 Feb - 7 Feb
+                                        <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="user" data-trigger="hover" data-placement="bottom">
+                                            <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a>
+                                        </div>
+                                    </div>                                        
+                                </div>
+                                <div class="add-task mt-2">
+                                    <a href="#" class="btn btn-primary">+ New Task</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 py-3">
-                        <div class="header progress-task">
-                            <h5>INPROGRESS</h5>
+                        <div class="header progress-task px-2">
+                            <h5>Inprogress</h5>
+                            <div class="underline"></div>
                         </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5>Bikin Tampilan Web</h5>
-                                <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                <div class="footer text-muted">
-                                    2 days ago
+                        <div class="card taskundone">
+                            <div class="card-body tasklist">
+                                <div class="card task1">
+                                    <div class="card-body">
+                                        <h5>Bikin Tampilan Web</h5>
+                                        <p>Bikin tampilan program web pake html css bootstrap react</p>
+                                    </div>
+                                    <div class="card-footer text-muted d-flex">
+                                        2/2/21 - 7/2/21
+                                        <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="user" data-trigger="hover" data-placement="bottom">
+                                            <a href="#" title="Assign to" class="btn assignto" data-trigger="focus"><span class="bi bi-person-plus"></span></a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 py-3">
-                        <div class="header complete-task">
-                            <h5>COMPLETED</h5>
+                        <div class="header complete-task px-2">
+                            <h5>Completed</h5>
+                            <div class="underline"></div>
                         </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h5>Bikin Tampilan Web</h5>
-                                <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                <a href="#" class="stretched-link"></a>
-                                <div class="footer text-muted">
-                                    2 days ago
+                        <div class="card taskundone">
+                            <div class="card-body tasklist">
+                                <div class="card task1">
+                                    <div class="card-body">
+                                        <h5>Bikin Tampilan Web</h5>
+                                        <p>Bikin tampilan program web pake html css bootstrap react</p>
+                                        <a href="#" class="stretched-link"></a>
+                                        <div class="footer text-muted">
+                                            2/2/21 - 7/2/21
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-2">
-                        <div class="card bg-transparent new-task">
-                            <div class="card-body">
-                                <h6>+ New Task</h6>
-                                <a href="#" class="stretched-link"></a>
                             </div>
                         </div>
                     </div>
@@ -218,14 +231,58 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-update">Update</button>
+                                <a href="update-task.html" class="btn btn-primary">Update</a>
                             </div>
                         </div>
                     </div>
+                </div>
+                <!-- Popover content -->
+                <div id="popover-content" class="content">
+                    <ul class="list-group custom-popover">
+                      <li class="list-group-item"><a href="user.php">User 1</a></li>
+                      <li class="list-group-item">User 2</li>
+                      <li class="list-group-item">User 3</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
     <!--/#wrapper-->
+
+    <script>
+        $("#done").click(function() {
+            $(this).toggleClass('red');
+        });
+        jQuery(function($) {
+            $('#done').on('click', function() {
+                var $el = $(this);
+            $el.find('span').toggleClass('bi-check2 bi-x');
+        }
+    )});
+    </script>
+    
+    <script>
+        $(document).ready(function(){
+            $(".userPopover").attr({
+                "data-toggle":"popover",
+                "data-content":"Assigned to",
+                "data-trigger":"focus"
+                });
+            
+            $("[data-toggle=tooltip]").tooltip();
+            $("[data-toggle=popover]").popover(); 
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+        $('.assignto').popover({
+            html: true,
+            content: function() {
+            return $('#popover-content').html();
+            }
+        });
+        });
+    </script>
 </body>
 </html>

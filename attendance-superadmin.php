@@ -13,7 +13,7 @@
     <!-- bootstrap css cdn -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <!-- custom css -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
 
     <!-- icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
@@ -118,14 +118,13 @@
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-body d-flex">
-                            
+                            <div class="card-body d-flex">                            
                                 <a href="add-request-query.php" type="button" class="btn btn-info btn-request" data-toggle="modal" data-target="#requestModal">
                                     <div class="maintext">Request</div>
                                     <div class="subtext">for paid leave</div>
                                 </a>
                                 <a href="add-absen.php" id="hide" type="button" class="btn btn-checkin" name="checkin">Check-In</a>
-                                <a href="add-absen-out.php" type="button" class="btn btn-info btn-checkout" onClick="checkout()">Check-out</a>
+                                <a href="add-absen-out.php" type="button" class="btn btn-danger btn-checkout" onClick="checkout()">Check-out</a>
 
                                 <script>
                                     function checkout() {
@@ -205,7 +204,7 @@
                                 <div class="modal-body">                                
                                     <label class="col-form-label">Request for:</label>
                                     <div class="form-group radio">
-                                        <div class="form-check form-check-inline">
+                                        <div class="form-check form-check-inline" required>
                                             <input class="form-check-input" type="radio" name="izin" value="1">
                                             <label class="form-check-label">
                                                 Izin
@@ -226,7 +225,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="message-text" class="col-form-label">Excuse:</label>
-                                        <textarea class="form-control" id="message-text" name="keterangan"></textarea>
+                                        <textarea class="form-control" id="message-text" name="keterangan" required></textarea>
                                     </div>
                                     <div class="form-group d-flex req-date">
                                         <div class="fromdate">
@@ -255,7 +254,18 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary" name="request">Request</button>
+                                    <button type="submit" class="btn btn-primary" name="request"
+                                    onClick="request()">Request</button>
+                                    <script>
+                                        function request() {
+                                            var r = confirm("Are you sure want to request leave?");
+                                            if (r == false) {
+                                                window.close();
+                                            } else if (r == true) {
+                                                window.alert("Successfully requested!");
+                                            }
+                                        }
+                                    </script>
                                 </div>
                             </form>
                         </div>

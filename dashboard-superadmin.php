@@ -10,7 +10,7 @@
     <!-- bootstrap css cdn -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <!-- custom css -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
 
     <!-- icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
@@ -278,18 +278,6 @@
     <script src="https://code.highcharts.com/modules/wordcloud.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-
-    <script>
-        $("#done").click(function() {
-            $(this).toggleClass('red');
-        });
-        jQuery(function($) {
-            $('#done').on('click', function() {
-                var $el = $(this);
-            $el.find('span').toggleClass('bi-check2 bi-x');
-        }
-    )});
-    </script>
 
     <script>
         // Pie Chart

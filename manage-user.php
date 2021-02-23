@@ -10,7 +10,7 @@
     <!-- bootstrap css cdn -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <!-- custom css -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
 
     <!-- icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
@@ -246,13 +246,13 @@
                                     <div class="form-group row">
                                         <label class="col-form-label col-2">Name</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" name="nama" id="nama">
+                                            <input class="form-control" type="text" name="nama" id="nama" required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-form-label col-2">Position</label>
                                         <div class="col-10">
-                                            <select class="form-control" name="posisi" id="posisi">
+                                            <select class="form-control" name="posisi" id="posisi" required>
                                                 <option value=""></option>
                                                 <option value="Front End">Front End</option>
                                                 <option value="Back End">Back End</option>
@@ -273,7 +273,7 @@
                                     <div class="form-group row">
                                         <label class="col-form-label col-2">Role</label>
                                         <div class="col-10">
-                                            <select class="form-control" name="role" id="role">
+                                            <select class="form-control" name="role" id="role" required>
                                                 <option value=""></option>
                                                 <option value="superadmin">Superadmin</option>
                                                 <option value="admin">Admin</option>
