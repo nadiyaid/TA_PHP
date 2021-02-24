@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include("koneksi.php");
 ?>
 <!DOCTYPE html>
@@ -91,14 +92,9 @@
                 </div> -->
 
                 <div class="user-wrapper dropdown">
-                    <div>
-                        <a href="user.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
-                        Admin</a>
-                        <div class="dropdown-content">
-                            <a href="user.php" class="profile">Profile</a>
-                            <a href="login.php">Logout</a>
-                        </div>
-                    </div>
+                    <?php
+                        include 'user-wrapper.php';
+                    ?>
                 </div>
             </nav>
 
@@ -151,22 +147,19 @@
                                             die("Connection failed: ".$config->connect_error);
                                         }
 
-                                        $query = "SELECT * FROM absensi";
+                                        $query = "SELECT tanggal, waktu_masuk, waktu_pulang, date_format(jam_kerja, '%H:%i') as jam_kerja FROM absensi";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
-                                        ?>
+                                    ?>
 
                                         <tr>
                                             <td><?php $tgl = $row['tanggal'];
                                                 echo date("D, d-M", strtotime($tgl));
                                                 ?>
                                             </td>
-                                            <td><?php $jam = $row['waktu_masuk'];
-                                                echo date("H:i:s", strtotime($jam)); ?></td>
-                                            <td><?php echo date("H:i:s", strtotime($row['waktu_pulang'])); ?></td>
-                                            <td><?php echo date("H:i", strtotime($row['jam_kerja']));
-                                                ?> Hours
-                                            </td>
+                                            <td><?php echo $row['waktu_masuk']; ?></td>
+                                            <td><?php echo $row['waktu_pulang']; ?></td>
+                                            <td><?php echo $row['jam_kerja']; ?> Hours</td>
                                         </tr>
 
                                     <?php
@@ -188,23 +181,26 @@
                                 </button>
                             </div>
                             <form action="add-request-user-query.php" method="POST">
-                                <div class="modal-body">                                
+                                <div class="modal-body">
+                                    <div class="fromdate">
+                                        <input type="date" class="form-control" id="recipient-name" name="reqdate" readonly value="<?php echo date('Y-m-j'); ?>" hidden>
+                                    </div>
                                     <label class="col-form-label">Request for:</label>
                                     <div class="form-group radio">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="izin" value="1">
+                                            <input class="form-check-input" type="radio" name="status" value="1">
                                             <label class="form-check-label">
                                                 Izin
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="sakit" value="1">
+                                            <input class="form-check-input" type="radio" name="status" value="2">
                                             <label class="form-check-label">
                                                 Sakit
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="cuti" value="1">
+                                            <input class="form-check-input" type="radio" name="status" value="3">
                                             <label class="form-check-label">
                                                 Cuti
                                             </label>
@@ -229,10 +225,10 @@
                                         <select class="form-control" name="pengganti">
                                         <option selected class="selected"></option>
                                         <?php
-                                            $q_subt = mysqli_query($config, "SELECT * FROM karyawan ORDER BY nip");
+                                            $q_subt = mysqli_query($config, "SELECT * FROM karyawan");
                                             while ($data_subt = mysqli_fetch_array($q_subt)) {
-                                        ?>                         
-                                            <option value="<?php echo $data_subt['nip']; ?>"><?php echo $data_subt['nama']; ?></option>
+                                        ?>
+                                            <option value="<?php echo $data_subt['nama']; ?>"><?php echo $data_subt['nama']; ?></option>
                                         <?php
                                             }  
                                         ?>

@@ -1,3 +1,7 @@
+<?php
+    include 'koneksi.php';
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,14 +92,9 @@
                 </div> -->
 
                 <div class="user-wrapper dropdown">
-                    <div>
-                        <a href="user.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
-                        Admin</a>
-                        <div class="dropdown-content">
-                            <a href="user.php" class="profile">Profile</a>
-                            <a href="login.php">Logout</a>
-                        </div>
-                    </div>
+                    <?php
+                        include 'user-wrapper.php';
+                    ?>
                 </div>
             </nav>
 

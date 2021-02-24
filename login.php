@@ -1,4 +1,5 @@
 <?php
+session_start();
 include('koneksi.php');
 	if(isset($_POST['loginbtn']))
 	{
@@ -7,19 +8,31 @@ include('koneksi.php');
 	
 		$query = "SELECT * FROM karyawan WHERE username='$username' AND password='$password'";
 		$query_run = mysqli_query($config, $query);
+        $role = mysqli_fetch_array($query_run);
 
-		if(mysqli_fetch_array($query_run))
-		{
-			session_start();
+		if($role['role'] == "admin"){
 			$_SESSION['username'] = $username;
+            $_SESSION['id'] = $role['nip'];
+            $_SESSION['name'] = $role['nama'];
 			header("location:dashboard-admin.php");
 		}
+        else if($role['role'] == "user"){
+            $_SESSION['username'] = $username;
+            $_SESSION['id'] = $role['nip'];
+            $_SESSION['name'] = $role['nama'];
+            header("location:dashboard.php");
+        }
+        else if($role['role'] == "superadmin"){
+            $_SESSION['username'] = $username;
+            $_SESSION['id'] = $role['nip'];
+            $_SESSION['name'] = $role['nama'];
+            header("location:dashboard-superadmin.php");
+        }
 		else
 		{
-			$message = "username atau password yang Anda masukkan salah";
-			echo "<script type='text/javascript'>alert('$message');</script>";
+			header("location:login.php?error=Incorrect Username or Password");
 		}
-}
+    }
 
 ?>
 <!DOCTYPE html>
@@ -65,6 +78,15 @@ include('koneksi.php');
             </div>
 
             <form action="" method="post">
+                <?php
+                    if(isset($_GET['error'])){
+                ?>
+                <div class="alert alert-danger" role="alert">
+                    <?=$_GET['error']?>
+                </div>
+                <?php
+                    }
+                ?>
                 <input type="text" name="username" class="input " placeholder="Username" required>
                 <input type="password" name="pw" class="input" placeholder="Password" required>
                 <div id="login-forgot">

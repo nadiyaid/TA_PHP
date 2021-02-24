@@ -332,11 +332,24 @@ header label span{
 
 .chart-body{
     background-color:white;
-    margin-top: -4rem;
     padding: 1rem 0;
     display: block;
     border-radius: 5px;
     box-shadow: 1px 10px 18px 0px rgba(156, 156, 156, 0.555);
+}
+
+.color-card{
+    background-color: white;
+    box-shadow: 1px 2px 10px 0px rgba(156, 156, 156, 0.24);
+    border: none;
+}
+
+.color-card.superadmin h6{
+    padding: 0;
+}
+
+.color-card.superadmin .divchart{
+    padding-top: 10px;
 }
 
 /* .chart-body2{
@@ -351,11 +364,6 @@ header label span{
     border-bottom: 5px solid #6770D2;
     border-radius: 5px;
     padding-top: 10px;
-}
-
-.color-card{
-    background: linear-gradient(1deg, #73d7f0, #c24ae0);
-    border: none;
 }
 
 .color-card2{

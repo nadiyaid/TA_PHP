@@ -1,3 +1,7 @@
+<?php
+    include 'koneksi.php';
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,7 +82,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="login.php">
+                    <a href="logout.php">
                     <i class="bi bi-power"></i>Logout</a>
                 </li>
             </ul>
@@ -100,14 +104,9 @@
                 </div> -->
 
                 <div class="user-wrapper dropdown">
-                    <div>
-                        <a href="user.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
-                        Admin</a>
-                        <div class="dropdown-content">
-                            <a href="user.php" class="profile">Profile</a>
-                            <a href="login.php">Logout</a>
-                        </div>
-                    </div>
+                    <?php
+                        include 'user-wrapper.php';
+                    ?>
                 </div>
             </nav>
 
@@ -124,28 +123,26 @@
                                     <thead>
                                         <tr>
                                             <th>NAME</th>
-                                            <th>POSITION</th>
-                                            <th>LEAVE</th>
-                                            <th>DATE</th>
+                                            <th style="width:1px;">POSITION</th>
+                                            <th style="text-align:center;">LEAVE</th>
+                                            <th style="text-align:center;">DATE</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Nadiya Ivana</td>
-                                            <td><text-muted>Front end</text-muted></td>
-                                            <td>
-                                                Izin
-                                            </td>
-                                            <td>2/2/21 - 3/2/21</td>
+                                    <?php
+                                        $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.dari_tanggal, request.sampai_tanggal, request.approval FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve'";
+                                        $query_run = mysqli_query($config, $query);
+                                        while($row = mysqli_fetch_array($query_run)){
+                                    ?>
+                                        <tr style="text-align:center;">
+                                            <td><?php echo $row['nama']; ?></td>
+                                            <td><text-muted><?php echo $row['posisi']; ?></text-muted></td>
+                                            <td ><?php echo $row['izin']?> (<?php echo $row['keterangan']?>)</td>
+                                            <td><?php echo date("j/n/y", strtotime($row['dari_tanggal'])); ?> - <?php echo date("j/n/y", strtotime($row['sampai_tanggal'])); ?></td>
                                         </tr>
-                                        <tr>
-                                            <td>Fikri Alfaiq</td>
-                                            <td><text-muted>Back end</text-muted></td>
-                                            <td>
-                                                Cuti
-                                            </td>
-                                            <td>7/2/21 - 14/2/21</td>
-                                        </tr>       
+                                        <?php
+                                            }
+                                        ?> 
                                     </tbody>
                                 </table>                                
                             </div>
@@ -154,117 +151,47 @@
                     <div class="col-6 pl-1">
                         <div class="card approval">
                             <h6 class="card-header">Needs Approval</h6>
-                                <div class="card-body pt-2">
-                                    <div class="row newreq">
-                                        <div class="col-12">
-                                            <div class="card" data-toggle="modal" data-target="#appRequest">
-                                                <div class="card-body">
-                                                    <h6><b>Nadiya Ivana</b></h6>
-                                                    <p>Izin (Sidang Tugas Akhir)</p>
-                                                    <a href="#" class="stretched-link"></a>
-                                                    <div class="footer text-muted">
-                                                        2/2/21 - 7/2/21
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <div class="row py-1 newreq">
+                            <div class="card-body pt-2">
+                            <?php
+                                $query = "SELECT request.request_id, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip";
+                                $query_run = mysqli_query($config, $query);
+                                while($row = mysqli_fetch_array($query_run)){
+                            ?>
+                                <div class="row newreq">
                                     <div class="col-12">
-                                        <div class="card" data-toggle="modal" data-target="#appRequest">
+                                        <div class="card" data-toggle="modal" data-target="#appRequest<?php echo $row['request.request_id']?>">
                                             <div class="card-body">
-                                                <h6>Fikri Alfaiq</h6>
-                                                <p>Cuti (Pulang kampung)</p>
+                                                <h6><b><?php echo $row['nama']; ?></b></h6>
+                                                <p><?php echo $row['status_ketidakhadiran']?> (<?php echo $row['keterangan']?>)</p>
                                                 <a href="#" class="stretched-link"></a>
                                                 <div class="footer text-muted">
-                                                    2/2/21 - 7/2/21
+                                                    <?php echo date("j/n/y", strtotime($row['dari_tanggal'])); ?> - <?php echo date("j/n/y", strtotime($row['sampai_tanggal'])); ?>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            <?php
+                                }
+                            ?>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row px-0 pb-3">
-                    <div class="col-6 mt-4 pt-2 d-flex">
-                        <div class="card card-body color-card">
+                    <div class="col-6 mt-1 pt-2 d-flex">
+                        <div class="card card-body color-card superadmin">
                             <div class="card-body chart">
-                                <div class="chart-body">
-                                    <canvas id="pie" height="100" width="200"></canvas>
-                                </div>
                                 <h6 class="card-title">Attendance</h6>
                                 <text-muted>Employee attendance for a week</text-muted>
                             </div>
+                            <div class="divchart">
+                                <canvas id="pie" height="100" width="200"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Modal -->
-                <div id="appRequest" class="modal fade" role="dialog">
-                    <div class="modal-dialog modal-xl" role="document">
-                
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel">Employee Leave</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row reqinfo">
-                                <div class="col-12">
-                                    <div class="req-header d-flex">
-                                        <span class="bi bi-calendar-date"><text-muted> Tuesday, 23 Jan 2021</text-muted></span>
-                                        <p class="stat">Waiting</p>
-                                    </div>
-                                    <div class="d-flex req-date">
-                                        <div class="fromdate">
-                                            <label class="col-form-label">From:</label>
-                                            <input type="date" class="form-control" id="recipient-name" disabled>
-                                        </div>
-                                        <div class="todate">
-                                            <label class="col-form-label">To:</label>
-                                            <input type="date" class="form-control" id="recipient-name" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="leave-type pt-3">Leave Type
-                                        <div class="form-group">
-                                            <select class="form-control" disabled>
-                                                <option selected class="selected">Izin</option>
-                                                <option value="1">User 1</option>
-                                                <option value="2">User 2</option>
-                                                <option value="3">User 3</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="excuse">Excuse
-                                        <div class="form-group">
-                                            <textarea class="form-control" disabled>Sidang Tugas Akhir</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row pt-3 reqapp">
-                                <div class="col-12">
-                                    <div class="comment">Comment
-                                        <div class="form-group">
-                                            <textarea class="form-control" placeholder="(Visible to Employee)"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="app-button">
-                                        <a href="#" class="btn btn-danger">Decline</a>
-                                        <a href="#" class="btn btn-primary">Approve</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
+                <?php include 'approve-request.php';?>
             </div>
         </div>
     </div>

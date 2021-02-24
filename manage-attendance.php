@@ -1,5 +1,6 @@
 <?php
     include 'koneksi.php';
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,14 +104,9 @@
                 </div> -->
 
                 <div class="user-wrapper dropdown">
-                    <div>
-                        <a href="user.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
-                        Admin</a>
-                        <div class="dropdown-content">
-                            <a href="user.php" class="profile">Profile</a>
-                            <a href="login.php">Logout</a>
-                        </div>
-                    </div>
+                    <?php
+                        include 'user-wrapper.php';
+                    ?>
                 </div>
             </nav>
 
@@ -140,35 +136,29 @@
                     <div class="col-6">
                         <div class="card approval">
                             <h6 class="card-header">Needs Approval</h6>
-                                <div class="card-body pt-2">
-                                    <div class="row newreq">
-                                        <div class="col-12">
-                                            <div class="card" data-toggle="modal" data-target="#appRequest">
-                                                <div class="card-body">
-                                                    <h6><b>Nadiya Ivana</b></h6>
-                                                    <p>Izin (Sidang Tugas Akhir)</p>
-                                                    <a href="#" class="stretched-link"></a>
-                                                    <div class="footer text-muted">
-                                                        2/2/21 - 7/2/21
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <div class="row py-1 newreq">
+                            <div class="card-body pt-2">
+                                <?php
+                                    $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip";
+                                    $query_run = mysqli_query($config, $query);
+                                    while($row = mysqli_fetch_array($query_run)){
+                                ?>
+                                <div class="row newreq">
                                     <div class="col-12">
                                         <div class="card" data-toggle="modal" data-target="#appRequest">
                                             <div class="card-body">
-                                                <h6>Fikri Alfaiq</h6>
-                                                <p>Cuti (Pulang kampung)</p>
+                                                <h6><b><?php echo $row['nama']; ?></b></h6>
+                                                <p><?php echo $row['status_ketidakhadiran']?> (<?php echo $row['keterangan']?>)</p>
                                                 <a href="#" class="stretched-link"></a>
                                                 <div class="footer text-muted">
-                                                    2/2/21 - 7/2/21
+                                                    <?php echo date("j/n/y", strtotime($row['dari_tanggal'])); ?> - <?php echo date("j/n/y", strtotime($row['sampai_tanggal'])); ?>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <?php
+                                    }
+                                ?>
                             </div>
                         </div>
                     </div>

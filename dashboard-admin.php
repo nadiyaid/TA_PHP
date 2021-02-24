@@ -3,7 +3,8 @@
 	include("koneksi.php");
 	if (@$_SESSION['username'] == "")
 	{
-		header("location:login.php?pesan=Belum Login");
+		
+        header("location:login.php?pesan=Belum Login");
 		exit;
 	}
 ?>
@@ -75,7 +76,7 @@
                     <i class="bi bi-person"></i>User</a>
                 </li>
                 <li>
-                    <a href="login.php">
+                    <a href="logout.php">
                     <i class="bi bi-power"></i>Logout</a>
                 </li>
             </ul>
@@ -97,14 +98,9 @@
                 </div> -->
 
                 <div class="user-wrapper dropdown">
-                    <div>
-                        <a href="user.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
-                        Admin</a>
-                        <div class="dropdown-content">
-                            <a href="user.php" class="profile">Profile</a>
-                            <a href="login.php">Logout</a>
-                        </div>
-                    </div>
+                    <?php
+                        include 'user-wrapper.php';
+                    ?>
                 </div>
             </nav>
 
