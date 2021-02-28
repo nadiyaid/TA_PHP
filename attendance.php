@@ -1,6 +1,7 @@
 <?php
     session_start();
     include("koneksi.php");
+    include 'validation.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -147,11 +148,10 @@
                                             die("Connection failed: ".$config->connect_error);
                                         }
 
-                                        $query = "SELECT tanggal, waktu_masuk, waktu_pulang, date_format(jam_kerja, '%H:%i') as jam_kerja FROM absensi";
+                                        $query = "SELECT tanggal, waktu_masuk, waktu_pulang, date_format(jam_kerja, '%H:%i') as jam_kerja FROM absensi WHERE nip = '$_SESSION[id]'";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
-
                                         <tr>
                                             <td><?php $tgl = $row['tanggal'];
                                                 echo date("D, d-M", strtotime($tgl));

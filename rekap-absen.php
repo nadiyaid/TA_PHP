@@ -1,6 +1,7 @@
 <?php
     include 'koneksi.php';
     session_start();
+    include 'validation.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,9 +105,14 @@
                 </div> -->
 
                 <div class="user-wrapper dropdown">
-                    <?php
-                        include 'user-wrapper.php';
-                    ?>
+                    <div>
+                        <a href="profle-superadmin.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
+                        <?=$_SESSION['name'];?></a>
+                        <div class="dropdown-content">
+                            <a href="profile-superadmin.php" class="profile">Profile</a>
+                            <a href="logout.php">Logout</a>
+                        </div>
+                    </div>
                 </div>
             </nav>
 
@@ -144,7 +150,7 @@
                                     ?> 
                                     <text-muted><?php echo $data_subt['nama']; ?></text-muted>
                                 </div>
-                                <table class="table table-hover man-att">
+                                <table class="table man-att">
                                     <thead>
                                         <tr>
                                             <th>DATE</th>
@@ -161,7 +167,7 @@
                                             die("Connection failed: ".$config->connect_error);
                                         }
 
-                                        $query = "SELECT * FROM absensi WHERE nip = '$_GET[nip]'";
+                                        $query = "SELECT tanggal, waktu_masuk, waktu_pulang, date_format(jam_kerja, '%H:%i') as jam_kerja FROM absensi WHERE nip = '$_GET[nip]'";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
@@ -170,12 +176,9 @@
                                                 echo date("D, d-M", strtotime($tgl));
                                                 ?>
                                             </td>
-                                            <td><?php $jam = $row['waktu_masuk'];
-                                                echo date("H:i:s", strtotime($jam)); ?></td>
-                                            <td><?php echo date("H:i:s", strtotime($row['waktu_pulang'])); ?></td>
-                                            <td><?php echo date("H:i", strtotime($row['jam_kerja']));
-                                                ?> Hours
-                                            </td>
+                                            <td><?php echo $row['waktu_masuk']; ?></td>
+                                            <td><?php echo $row['waktu_pulang']; ?></td>
+                                            <td><?php echo $row['jam_kerja']; ?> Hours</td>
                                             <td class="details-btn">
                                                 <a href="del-att.php?absen_id=<?php echo $row['absen_id']; ?>" class="btn btn-danger del-att" onClick="hapus()">Delete</a>
                                                 <script>
@@ -200,71 +203,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Modal -->
-                <div id="appRequest" class="modal fade" role="dialog">
-                    <div class="modal-dialog modal-xl" role="document">
-                
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel">Employee Leave</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row reqinfo">
-                                <div class="col-12">
-                                    <div class="req-header d-flex">
-                                        <span class="bi bi-calendar-date"><text-muted> Tuesday, 23 Jan 2021</text-muted></span>
-                                        <p class="stat">Waiting</p>
-                                    </div>
-                                    <div class="d-flex req-date">
-                                        <div class="fromdate">
-                                            <label class="col-form-label">From:</label>
-                                            <input type="date" class="form-control" id="recipient-name" disabled>
-                                        </div>
-                                        <div class="todate">
-                                            <label class="col-form-label">To:</label>
-                                            <input type="date" class="form-control" id="recipient-name" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="leave-type pt-3">Leave Type
-                                        <div class="form-group">
-                                            <select class="form-control" disabled>
-                                                <option selected class="selected">Izin</option>
-                                                <option value="1">User 1</option>
-                                                <option value="2">User 2</option>
-                                                <option value="3">User 3</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="excuse">Excuse
-                                        <div class="form-group">
-                                            <textarea class="form-control" disabled>Sidang Tugas Akhir</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row pt-3 reqapp">
-                                <div class="col-12">
-                                    <div class="comment">Comment
-                                        <div class="form-group">
-                                            <textarea class="form-control" placeholder="(Visible to Employee)"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="app-button">
-                                        <a href="#" class="btn btn-danger">Decline</a>
-                                        <a href="#" class="btn btn-primary">Approve</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -280,26 +218,14 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 
     <script>
-        $("#done").click(function() {
-            $(this).toggleClass('red');
-        });
-        jQuery(function($) {
-            $('#done').on('click', function() {
-                var $el = $(this);
-            $el.find('span').toggleClass('bi-check2 bi-x');
-        }
-    )});
-    </script>
-
-<script>
-    $(document).ready(function(){
-        $("#filter").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $(".dropdown-menu a").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        $(document).ready(function(){
+            $("#filter").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".dropdown-menu a").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

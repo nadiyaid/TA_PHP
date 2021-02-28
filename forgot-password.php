@@ -1,43 +1,24 @@
 <?php
-session_start();
 include('koneksi.php');
-	if(isset($_POST['loginbtn']))
-	{
-		$username = $_POST['username'];
-		$password = $_POST['pw'];
+
+    if(isset($_POST['reset'])){
+        $username = $_POST['username'];
+        $password = $_POST['pw'];
         $password = md5($password);
-	
-		$query = "SELECT * FROM karyawan WHERE username='$username' AND password='$password'";
-		$query_run = mysqli_query($config, $query);
-        $role = mysqli_fetch_array($query_run);
 
-		if($role['role'] == "admin"){
-			$_SESSION['username'] = $username;
-            $_SESSION['id'] = $role['nip'];
-            $_SESSION['name'] = $role['nama'];
-            $_SESSION['position'] = $role['posisi'];
-			header("location:dashboard-admin.php");
-		}
-        else if($role['role'] == "user"){
-            $_SESSION['username'] = $username;
-            $_SESSION['id'] = $role['nip'];
-            $_SESSION['name'] = $role['nama'];
-            $_SESSION['position'] = $role['posisi'];
-            header("location:dashboard.php");
+        $sql = mysqli_query($config, "SELECT * FROM karyawan WHERE username = '$username'") or die(mysqli_error($config));
+        $check = mysqli_num_rows($sql);
+
+        if($check == 0){
+            header("location:forgot-password.php?error=Incorrect Username!");
         }
-        else if($role['role'] == "superadmin"){
-            $_SESSION['username'] = $username;
-            $_SESSION['id'] = $role['nip'];
-            $_SESSION['name'] = $role['nama'];
-            $_SESSION['position'] = $role['posisi'];
-            header("location:dashboard-superadmin.php");
+
+        else{
+            $sql = mysqli_query($config, "UPDATE karyawan SET password = '$password' WHERE username='$username'") or die(mysqli_error($config));
+            header("location:forgot-password.php?success=Password successfully changed");
         }
-		else
-		{
-			header("location:login.php?error=Incorrect Username or Password");
-		}
+
     }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,29 +58,30 @@ include('koneksi.php');
     <div class="login-wrapper">
         <div class="content shadow p-3">
             <div class="title">
-                <h2>Hello</h2>
-                <p>Please login first</p>
+                <h2>Reset Password</h2>
+                <p>Enter your username</p>
             </div>
 
-            <form action="" method="post">
+            <form action="" method="POST">
                 <?php
                     if(isset($_GET['error'])){
                 ?>
-                <div class="alert alert-danger alert-dismissible">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <div class="alert alert-danger" role="alert">
                     <?=$_GET['error']?>
                 </div>
                 <?php
                     }
+                    else if(isset($_GET['success'])){
                 ?>
-                <input type="text" name="username" class="input " placeholder="Username" required>
-                <input type="password" name="pw" class="input" placeholder="Password" required>
-                <div id="login-forgot">
-                    <a class="underlineHover" href="forgot-password.php">Forgot password?</a>
+                <div class="alert alert-success" role="alert">
+                        <?=$_GET['success']?>
                 </div>
-                <input type="submit" class="login" value="Login" name="loginbtn"></input>
-                <div id="register">
-                    Don't have account? <a class="underlineHover" href="register.php">Register Here</a>
+                <?php }?>
+                <input type="text" name="username" class="input " placeholder="Username" required>
+                <input type="password" name="pw" class="input" placeholder="New Password" required>
+                <input type="submit" class="login" value="Change Password" name="reset"></input>
+                <div id="back">
+                    <a class="underlineHover" href="login.php"><span class= "bi bi-arrow-left"> Back to Login Page</span></a>
                 </div>
             </form>	
         </div>

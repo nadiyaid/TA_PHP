@@ -55,19 +55,19 @@
 
             <ul class="list-unstyled components">
                 <li>
-                    <a href="dashboard-admin.php">
+                    <a href="dashboard.php">
                     <i class="bi bi-grid"></i>Dashboard</a>
                 </li>
                 <li>
-                    <a href="attendance-admin.php">
+                    <a href="attendance.php">
                     <i class="bi bi-calendar-check"></i>Attendance</a>
                 </li>
                 <li class="active">
-                    <a href="task-admin.php">
+                    <a href="task.php">
                     <i class="bi bi-list-task"></i>Task</a>
                 </li>
                 <li>
-                    <a href="user-admin.php">
+                    <a href="user.php">
                     <i class="bi bi-person"></i>Profile</a>
                 </li>
                 <li>
@@ -93,17 +93,10 @@
                 </div> -->
 
                 <div class="user-wrapper dropdown">
-                    <div>
-                        <a href="user-admin.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
-                        <?=$_SESSION['name'];?></a>
-                        <div class="dropdown-content">
-                            <a href="user-admin.php" class="profile">Profile</a>
-                            <a href="logout.php">Logout</a>
-                        </div>
-                    </div>
+                    <?php include 'user-wrapper.php';?>
                 </div>
             </nav>
-       
+
             <div class="container">
                 <div class="row py-3 justify-content-center">
                     <div class="col-8">
@@ -118,7 +111,7 @@
                                     $query_run = mysqli_query($config, $query);
                                     while($row = mysqli_fetch_array($query_run)){
                                 ?>
-                                <form action="update-task-query.php" method="POST">
+                                <form action="update-task-user-query.php" method="POST">
                                     <input type="hidden" class="form-control" name="task_id" value="<?php echo $row['task_id'];?>">
                                     <div class="task-header d-flex">
                                         <h5 class="font-weight-bold"><?php echo $row['nama_task']; ?></h5>
@@ -146,11 +139,11 @@
                                     </div>
                                     <div class="comment">
                                         <label>Comment</label>
-                                        <textarea class="form-control" placeholder="Updated task details (optional)" name="comment"></textarea>
+                                        <textarea class="form-control" placeholder="Updated task details (optional)"></textarea>
                                     </div>
                                     <div class="update-progress d-flex py-2">
                                         <label class="pr-2">Progress :</label>
-                                        <input type="number" class="form-control" name="progress" value="<?php echo $row['percentage']; ?>">
+                                        <input type="number" class="form-control" name="progress" value="<?php echo $row['percentage']; ?>">%
                                     </div>
                                     <div class="button-footer d-flex px-5">
                                         <a href="javascript:history.go(-1)" class="btn btn-close">Close</a>

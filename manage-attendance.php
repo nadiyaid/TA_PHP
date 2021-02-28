@@ -1,6 +1,7 @@
 <?php
     include 'koneksi.php';
     session_start();
+    include 'validation.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,9 +105,14 @@
                 </div> -->
 
                 <div class="user-wrapper dropdown">
-                    <?php
-                        include 'user-wrapper.php';
-                    ?>
+                    <div>
+                        <a href="profle-superadmin.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
+                        <?=$_SESSION['name'];?></a>
+                        <div class="dropdown-content">
+                            <a href="profile-superadmin.php" class="profile">Profile</a>
+                            <a href="logout.php">Logout</a>
+                        </div>
+                    </div>
                 </div>
             </nav>
 
@@ -137,28 +143,42 @@
                         <div class="card approval">
                             <h6 class="card-header">Needs Approval</h6>
                             <div class="card-body pt-2">
-                                <?php
-                                    $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip";
-                                    $query_run = mysqli_query($config, $query);
-                                    while($row = mysqli_fetch_array($query_run)){
-                                ?>
-                                <div class="row newreq">
-                                    <div class="col-12">
-                                        <div class="card" data-toggle="modal" data-target="#appRequest">
-                                            <div class="card-body">
-                                                <h6><b><?php echo $row['nama']; ?></b></h6>
-                                                <p><?php echo $row['status_ketidakhadiran']?> (<?php echo $row['keterangan']?>)</p>
-                                                <a href="#" class="stretched-link"></a>
-                                                <div class="footer text-muted">
-                                                    <?php echo date("j/n/y", strtotime($row['dari_tanggal'])); ?> - <?php echo date("j/n/y", strtotime($row['sampai_tanggal'])); ?>
+                                <div class="scrollable">
+                                    <?php
+                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval=''";
+                                        $query_run = mysqli_query($config, $query);
+                                        while($row = mysqli_fetch_array($query_run)){
+                                    ?>
+                                    <div class="row newreq">
+                                        <div class="col-12">
+                                            <div class="card" style="cursor:pointer;" data-toggle="modal" data-target="#appRequest<?php echo $row['request_id']; ?>">
+                                                <div class="card-body">
+                                                    <div class="d-flex">
+                                                        <h6><b><?php echo $row['nama']; ?></b></h6>
+                                                        <a onClick="javascript:hapus($(this));return false;" class="delreq" href="del-request.php?request_id=<?php echo $row['request_id']; ?>" title="delete request"><span class="bi bi-x"></span></a>
+                                                    </div>
+
+                                                    <script>
+                                                        function hapus(anchor) {
+                                                            var r = confirm("Are you sure want to delete this request?");
+                                                            if (r) {
+                                                                window.location=anchor.attr("href");
+                                                            }
+                                                        }   
+                                                    </script>
+                                                    <p><?php echo $row['keterangan']; ?></p>
+                                                    <div class="footer text-muted">
+                                                        <?php echo $row['dari_tanggal']; ?> - <?php echo $row['sampai_tanggal']; ?>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <?php
+                                        include 'approve-request.php';
+                                        }
+                                    ?>
                                 </div>
-                                <?php
-                                    }
-                                ?>
                             </div>
                         </div>
                     </div>
@@ -198,71 +218,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Modal -->
-                <div id="appRequest" class="modal fade" role="dialog">
-                    <div class="modal-dialog modal-xl" role="document">
-                
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel">Employee Leave</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row reqinfo">
-                                <div class="col-12">
-                                    <div class="req-header d-flex">
-                                        <span class="bi bi-calendar-date"><text-muted> Tuesday, 23 Jan 2021</text-muted></span>
-                                        <p class="stat">Waiting</p>
-                                    </div>
-                                    <div class="d-flex req-date">
-                                        <div class="fromdate">
-                                            <label class="col-form-label">From:</label>
-                                            <input type="date" class="form-control" id="recipient-name" disabled>
-                                        </div>
-                                        <div class="todate">
-                                            <label class="col-form-label">To:</label>
-                                            <input type="date" class="form-control" id="recipient-name" disabled>
-                                        </div>
-                                    </div>
-                                    <div class="leave-type pt-3">Leave Type
-                                        <div class="form-group">
-                                            <select class="form-control" disabled>
-                                                <option selected class="selected">Izin</option>
-                                                <option value="1">User 1</option>
-                                                <option value="2">User 2</option>
-                                                <option value="3">User 3</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="excuse">Excuse
-                                        <div class="form-group">
-                                            <textarea class="form-control" disabled>Sidang Tugas Akhir</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row pt-3 reqapp">
-                                <div class="col-12">
-                                    <div class="comment">Comment
-                                        <div class="form-group">
-                                            <textarea class="form-control" placeholder="(Visible to Employee)"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="app-button">
-                                        <a href="#" class="btn btn-danger">Decline</a>
-                                        <a href="#" class="btn btn-primary">Approve</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -278,26 +233,14 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 
     <script>
-        $("#done").click(function() {
-            $(this).toggleClass('red');
-        });
-        jQuery(function($) {
-            $('#done').on('click', function() {
-                var $el = $(this);
-            $el.find('span').toggleClass('bi-check2 bi-x');
-        }
-    )});
-    </script>
-
-<script>
-    $(document).ready(function(){
-        $("#filter").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $(".dropdown-menu a").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        $(document).ready(function(){
+            $("#filter").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".dropdown-menu a").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
-    include("koneksi.php");
     session_start();
+    include("koneksi.php");
     include 'validation.php';
 ?>
 <!DOCTYPE html>
@@ -55,32 +55,20 @@
 
             <ul class="list-unstyled components">
                 <li>
-                    <a href="dashboard-superadmin.php">
+                    <a href="dashboard-admin.php">
                     <i class="bi bi-grid"></i>Dashboard</a>
                 </li>
-                <li>
-                    <a href="#attSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <li class="active">
+                    <a href="attendance-admin.php">
                     <i class="bi bi-calendar-check"></i>Attendance</a>
-                    <ul class="dropdown list-unstyled" id="attSubmenu">
-                        <li class="active">
-                            <a href="attendance-superadmin.php">Submit Attendance</a>
-                        </li>
-                        <li>
-                            <a href="manage-attendance.php">Manage User Attendance</a>
-                        </li>
-                    </ul>
                 </li>
                 <li>
-                    <a href="#userSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="bi bi-person"></i>User</a>
-                    <ul class="collapse list-unstyled" id="userSubmenu">
-                        <li>
-                            <a href="manage-user.php">Manage User</a>
-                        </li>
-                        <li>
-                            <a href="profile-superadmin.php">Profile</a>
-                        </li>
-                    </ul>
+                    <a href="task-admin.php">
+                    <i class="bi bi-list-task"></i>Task</a>
+                </li>
+                <li>
+                    <a href="user-admin.php">
+                    <i class="bi bi-person"></i>User</a>
                 </li>
                 <li>
                     <a href="login.php">
@@ -96,7 +84,7 @@
                     <button type="button" id="sidebarCollapse" class="btn">
                         <span class="bi bi-list"></span>
                     </button>
-                    <b class="menu">Attendance Super Admin</b>
+                    <b class="menu">Attendance</b>
                 </h5>
 
                 <!-- <div class="search-wrapper">
@@ -106,10 +94,10 @@
 
                 <div class="user-wrapper dropdown">
                     <div>
-                        <a href="profle-superadmin.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
+                        <a href="user-admin.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
                         <?=$_SESSION['name'];?></a>
                         <div class="dropdown-content">
-                            <a href="profile-superadmin.php" class="profile">Profile</a>
+                            <a href="user-admin.php" class="profile">Profile</a>
                             <a href="logout.php">Logout</a>
                         </div>
                     </div>
@@ -120,13 +108,13 @@
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-body d-flex">                            
-                                <a href="add-request-query.php" type="button" class="btn btn-info btn-request" data-toggle="modal" data-target="#requestModal">
+                            <div class="card-body d-flex">
+                                <a href="add-request-admin-query.php" type="button" class="btn btn-info btn-request" data-toggle="modal" data-target="#requestModal">
                                     <div class="maintext">Request</div>
                                     <div class="subtext">for paid leave</div>
                                 </a>
-                                <a href="add-absen.php" id="hide" type="button" class="btn btn-checkin" name="checkin">Check-In</a>
-                                <a href="add-absen-out.php" type="button" class="btn btn-danger btn-checkout" onClick="checkout()">Check-out</a>
+                                <a href="add-absen-admin.php" id="hide" type="button" class="btn btn-checkin" name="checkin">Check-In</a>
+                                <a href="add-absen-out-admin.php" type="button" class="btn btn-danger btn-checkout" onClick="checkout()">Check-out</a>
 
                                 <script>
                                     function checkout() {
@@ -161,7 +149,6 @@
                                     </thead>
                                     <tbody>
                                     <?php
-
                                         if($config->connect_error){
                                             die("Connection failed: ".$config->connect_error);
                                         }
@@ -179,17 +166,16 @@
                                             <td><?php echo $row['waktu_pulang']; ?></td>
                                             <td><?php echo $row['jam_kerja']; ?> Hours</td>
                                         </tr>
-                                        
+
                                     <?php
                                         }
-                                    ?>   
+                                    ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                
                 <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -199,14 +185,14 @@
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form action="add-request-query.php" method="POST">
-                                <div class="modal-body">                       
+                            <form action="add-request-admin-query.php" method="POST">
+                                <div class="modal-body">
                                     <div class="fromdate">
                                         <input type="date" class="form-control" id="recipient-name" name="reqdate" readonly value="<?php echo date('Y-m-j'); ?>" hidden>
-                                    </div>         
+                                    </div>
                                     <label class="col-form-label">Request for:</label>
                                     <div class="form-group radio">
-                                        <div class="form-check form-check-inline" required>
+                                        <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="status" value="1">
                                             <label class="form-check-label">
                                                 Izin
@@ -222,12 +208,6 @@
                                             <input class="form-check-input" type="radio" name="status" value="3">
                                             <label class="form-check-label">
                                                 Cuti
-                                            </label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="status" value="4">
-                                            <label class="form-check-label">
-                                                Unpaid
                                             </label>
                                         </div>
                                     </div>
@@ -252,7 +232,7 @@
                                         <?php
                                             $q_subt = mysqli_query($config, "SELECT * FROM karyawan");
                                             while ($data_subt = mysqli_fetch_array($q_subt)) {
-                                        ?>                         
+                                        ?>
                                             <option value="<?php echo $data_subt['nama']; ?>"><?php echo $data_subt['nama']; ?></option>
                                         <?php
                                             }  
@@ -262,8 +242,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary" name="request"
-                                    onClick="request()">Request</button>
+                                    <button type="submit" class="btn btn-primary" name="request" onClick="request()">Request</button>
                                     <script>
                                         function request() {
                                             var r = confirm("Are you sure want to request leave?");
@@ -273,7 +252,7 @@
                                                 window.alert("Successfully requested!");
                                             }
                                         }
-                                    </script>
+                                </script>
                                 </div>
                             </form>
                         </div>
@@ -283,12 +262,5 @@
         </div>
     </div>
     <!--/#wrapper-->
-
-    <script>
-    $('a#hide').click(function() {
-        $('td:nth-child(3)').hide();
-        $('td:nth-child(4)').hide();
-        });
-    </script>
 </body>
 </html>

@@ -1,41 +1,32 @@
 <?php
 session_start();
 include('koneksi.php');
-	if(isset($_POST['loginbtn']))
+	if(isset($_POST['register']))
 	{
-		$username = $_POST['username'];
+        $username = $_POST['username'];
 		$password = $_POST['pw'];
-        $password = md5($password);
-	
-		$query = "SELECT * FROM karyawan WHERE username='$username' AND password='$password'";
-		$query_run = mysqli_query($config, $query);
-        $role = mysqli_fetch_array($query_run);
+        $nama = $_POST['nama'];
+        $email = $_POST['email'];
+        $confirm = $_POST['confirm'];
 
-		if($role['role'] == "admin"){
-			$_SESSION['username'] = $username;
-            $_SESSION['id'] = $role['nip'];
-            $_SESSION['name'] = $role['nama'];
-            $_SESSION['position'] = $role['posisi'];
-			header("location:dashboard-admin.php");
-		}
-        else if($role['role'] == "user"){
-            $_SESSION['username'] = $username;
-            $_SESSION['id'] = $role['nip'];
-            $_SESSION['name'] = $role['nama'];
-            $_SESSION['position'] = $role['posisi'];
-            header("location:dashboard.php");
+        $sql = mysqli_query($config, "SELECT * FROM karyawan WHERE nama = '$nama'") or die(mysqli_error($config));
+        $check = mysqli_num_rows($sql);
+
+        if($password !== $confirm){
+            header("location:register.php?error=Your password doesn't match");
         }
-        else if($role['role'] == "superadmin"){
-            $_SESSION['username'] = $username;
-            $_SESSION['id'] = $role['nip'];
-            $_SESSION['name'] = $role['nama'];
-            $_SESSION['position'] = $role['posisi'];
-            header("location:dashboard-superadmin.php");
+        
+        else if ($password === $confirm and $check>0) {
+		
+            $query = "UPDATE karyawan SET nama='$nama', username='$username', password=MD5('$password'), email='$email' WHERE nama='$nama'";
+            $query_run = mysqli_query($config, $query) or die(mysqli_error($config));
+
+			header("location:register.php?success=Successfully register");
         }
-		else
-		{
-			header("location:login.php?error=Incorrect Username or Password");
-		}
+
+        else{
+            header("location:register.php?error=Name not found. Please contact administrator");
+        }
     }
 
 ?>
@@ -74,11 +65,10 @@ include('koneksi.php');
         </a>
     </div>
 
-    <div class="login-wrapper">
+    <div class="register">
         <div class="content shadow p-3">
             <div class="title">
-                <h2>Hello</h2>
-                <p>Please login first</p>
+                <h3>Create an account</h3>
             </div>
 
             <form action="" method="post">
@@ -91,15 +81,37 @@ include('koneksi.php');
                 </div>
                 <?php
                     }
+                    else if(isset($_GET['success'])){
                 ?>
-                <input type="text" name="username" class="input " placeholder="Username" required>
-                <input type="password" name="pw" class="input" placeholder="Password" required>
-                <div id="login-forgot">
-                    <a class="underlineHover" href="forgot-password.php">Forgot password?</a>
+                <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 </div>
-                <input type="submit" class="login" value="Login" name="loginbtn"></input>
+                <?php }?>
+
+                <div class="form-group">
+                    <input type="text" name="nama" class="form-control" placeholder="Full Name" required>
+                </div>
+
+                <div class="form-group">
+                <input type="text" name="username" class="form-control " placeholder="Username" required>
+                </div>
+
+                
+                <div class="form-group">
+                <input type="email" name="email" class="form-control" placeholder="Email" required>
+                </div>
+
+                <div class="form-group">
+                <input type="password" name="pw" class="form-control" placeholder="Password" required>  
+                </div>
+
+                <div class="form-group">
+                <input type="password" name="confirm" class="form-control" placeholder="Confirm Password" required>
+                </div>
+
+                <input type="submit" class="login" value="Register" name="register"></input>
                 <div id="register">
-                    Don't have account? <a class="underlineHover" href="register.php">Register Here</a>
+                    Already have an account? <a class="underlineHover" href="login.php">Login Here</a>
                 </div>
             </form>	
         </div>

@@ -1,6 +1,7 @@
 <?php
     include 'koneksi.php';
     session_start();
+    include 'validation.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,192 +100,119 @@
             </nav>
 
             <div class="container">                
-                <div class="row px-3 pt-3">
-                    <div class="col-4 pl-1 pt-2">
-                        <div class="card informasi">
+                <div class="row pt-4 pb-2">
+                    <div class="col-5">
+                        <div class="card informasi" style="border: none;">
                             <div class="card-header pt-4">
                                 <h5 class="card-title">Information</h5>
-                                <text-muted class="card-text">Infromasi karyawan yang izin, cuti, dan WFH</text-muted>
+                                <text-muted class="card-text">Infromasi mengenai karyawan yang sedang izin, cuti, dan WFH</text-muted>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body py-0 tabinfo">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th>NAME</th>
-                                            <th>POSITION</th>
-                                            <th>LEAVE</th>
-                                            <th>DATE</th>
+                                            <th style="width:1px;">POSITION</th>
+                                            <th style="text-align:center;">LEAVE</th>
+                                            <th style="text-align:center;">DATE</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Nadiya Ivana</td>
-                                            <td><text-muted>Front end</text-muted></td>
-                                            <td>
-                                                Izin
-                                            </td>
-                                            <td>2/2/21 - 3/2/21</td>
+                                    <?php
+                                        $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal, request.approval FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve'";
+                                        $query_run = mysqli_query($config, $query);
+                                        while($row = mysqli_fetch_array($query_run)){
+                                    ?>
+                                        <tr style="text-align:center;">
+                                            <td><?php echo $row['nama']; ?></td>
+                                            <td><text-muted><?php echo $row['posisi']; ?></text-muted></td>
+                                            <td ><?php echo $row['keterangan']; ?></td>
+                                            <td><?php echo $row['dari_tanggal']; ?> - <?php echo $row['sampai_tanggal']; ?></td>
                                         </tr>
-                                        <tr>
-                                            <td>Fikri Alfaiq</td>
-                                            <td><text-muted>Back end</text-muted></td>
-                                            <td>
-                                                Cuti
-                                            </td>
-                                            <td>7/2/21 - 14/2/21</td>
-                                        </tr>       
+                                        <?php
+                                            }
+                                        ?> 
                                     </tbody>
-                                </table>
+                                </table>                                
                             </div>
                         </div>
                     </div>
-                    <div class="col-4 mt-4 pt-2 d-flex pl-1">
-                        <div class="card card-body color-card">
-                            <div class="card-body chart">
-                                <div class="chart-body">
-                                    <canvas id="pie" height="200"></canvas>
-                                </div>
-                                <h6 class="card-title">Attendance</h6>
-                                <text-muted>Your attendance recap in the last 30 days</text-muted>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4 mt-4 pt-2 d-flex pl-1">
-                        <div class="card card-body color-card2">
-                            <div class="card-body chart">
-                                <div class="chart-body">
-                                    <canvas id="bar" height="200"></canvas>
-                                </div>
-                                <div class="chart2">
-                                    <h6 class="card-title">Tasks Progress</h6>
-                                    <text-muted>Your task progress all the time</text-muted>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row table-task px-3">
-                    <div class="col-12 mt-4 py-3 pl-1">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="header">
+                    <div class="col-7 pl-1">
+                        <div class="card table-task">
+                            <div class="header">
                                     <h5 class="title">New Task</h5>
                                 </div>
-                                
-                                <?php
-                                    $connection = mysqli_connect("localhost", "root", "", "kehadiran");
-
-                                    if($connection->connect_error){
-                                        die("Connection failed: ".$connection->connect_error);
-                                    }
-
-                                    $query = "SELECT nama_task, deskripsi, created_at, end_date, status FROM task";
-                                    $query_run = mysqli_query($connection, $query);
-                                ?>
-
+                            <div class="card-body tabtask py-0">
                                 <table class="table w-100">
                                     <thead>
                                         <tr>
                                             <th>TITLE</th>
-                                            <th>DESCRIPTION</th>
-                                            <th>CREATED AT</th>
-                                            <th>DUE DATE</th>
+                                            <th class="px-4">DESCRIPTION</th>
+                                            <th style="text-align:center;">CREATED</th>
+                                            <th class="px-4">DUE</th>
                                             <th>STATUS</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php
+                                            if($config->connect_error){
+                                                die("Connection failed: ".$config->connect_error);
+                                            }
 
-                                    <?php
-                                        if(mysqli_num_rows($query_run) > 0){
-                                            while($row = mysqli_fetch_assoc($query_run)){
-                                    ?>
+                                            $query = "SELECT * FROM task WHERE nip = '$_SESSION[id]'";
+                                            $query_run = mysqli_query($config, $query);
+                                            while($row = mysqli_fetch_array($query_run)){
+                                        ?>
                                         <tr>
-                                            <td><?php echo $row['nama_task']; ?></td>
-                                            <td><?php echo $row['deskripsi']; ?></td>
-                                            <td><?php echo $row['created_at']; ?></td>
-                                            <td><?php echo $row['end_date']; ?></td>
-                                            <td class="indikator"><?php echo $row['status']; ?></td>
+                                            <td>
+                                                <?php echo $row['nama_task']; ?></td>
+                                            <td class="pl-3">
+                                                <?php echo $row['deskripsi']; ?></td>
+                                            <td style="text-align:center;">
+                                                <?php echo date("d M", strtotime($row['created_at'])); ?></td>
+                                            <td class="pl-3">
+                                                <?php echo date("j M", strtotime($row['end_date'])); ?></td>
+                                            <td class="indikator">
+                                                <?php echo $row['status']; ?></td>
                                             <td class="details-btn">
-                                                <button type="button" class="btn btn-info detbtn" data-toggle="modal" data-target="#taskModal">Details</button>
+                                                <button type="button" class="btn btn-info detbtn" data-toggle="modal" data-target="#taskModal<?php echo $row['task_id']; ?>">Details</button>
                                             </td>
                                         </tr>
-                                        
                                         <?php
+                                            include 'details-task-user.php';
                                             }
-                                        }
                                         ?>
                                     </tbody>
                                 </table>
-                                <!-- Modal -->
-                                <div id="taskModal" class="modal fade" role="dialog">
-                                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                                
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="myModalLabel">Task Details</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row h-100">
-                                                <div class="col-8 px-4">
-                                                    <div class="task-header d-flex">
-                                                        <h5>Bikin Tampilan Web</h5>
-                                                        <!-- <div id="ck-button">
-                                                            <label>
-                                                                <input type="checkbox" value="1">
-                                                                <span class="bi bi-check2 tooltip-test" title="Mark as Done"></span>
-                                                            </label>
-                                                        </div> -->
-                                                        <button type="button" id="done" class="btn-cancel tooltip-test" title="Mark as Done">
-                                                            <span class="bi bi-check2 "></span>
-                                                        </button>
-                                                    </div>
-                                                    <p class="tooltip-test" title="Task Description">Bikin tampilan program web pake html css bootstrap react</p>
-                                                    <div class="comment">
-                                                        <label>Comment</label>
-                                                        <textarea class="form-control" disabled></textarea>
-                                                    </div>
-                                                    <div class="progbar">Progress</div>
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-4 updates">
-                                                    <div class="card">
-                                                        <div class="card-body time-task">
-                                                            <div class="row">
-                                                                <div class="col-lg-6 division">
-                                                                    <p class="text-muted">Created At</p>
-                                                                    <p class="font-weight-bold">Feb 2, 1:02 pm</p>
-                                                                </div>
-                                                                <div class="col-lg-6">
-                                                                    <p class="text-muted">Due Date</p>
-                                                                    <p class="font-weight-bold">Feb 7, 1:02 pm</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- <div class="created-info">
-                                                        <h6>Updates</h6>
-                                                        <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                                    </div> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
-                                            <a href="update-task.php" class="btn btn-primary">Update</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="row pb-2">
+                    <div class="col-6 pt-2 d-flex">
+                        <div class="card card-body color-card admin">
+                            <div class="card-body chart">
+                                <h6 class="card-title py-0">Attendance</h6>
+                                <text-muted>Your attendance recap in the last 30 days</text-muted>                                
+                            </div>
+                            <div class="divchart">
+                                <canvas id="pie" height="100" width="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 pt-2 d-flex pl-1">
+                        <div class="card card-body color-card admin">
+                            <div class="card-body chart">
+                                <h6 class="card-title py-0">Tasks Progress</h6>
+                                <text-muted>Your task progress all the time</text-muted>
+                            </div>
+                            <div class="divchart">
+                                <canvas id="bar" height="150"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>   
             </div>
         </div>
     </div>

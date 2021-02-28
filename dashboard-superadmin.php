@@ -1,6 +1,7 @@
 <?php
     include 'koneksi.php';
     session_start();
+    include 'validation.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,9 +105,14 @@
                 </div> -->
 
                 <div class="user-wrapper dropdown">
-                    <?php
-                        include 'user-wrapper.php';
-                    ?>
+                    <div>
+                        <a href="profle-superadmin.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
+                        <?=$_SESSION['name'];?></a>
+                        <div class="dropdown-content">
+                            <a href="profile-superadmin.php" class="profile">Profile</a>
+                            <a href="logout.php">Logout</a>
+                        </div>
+                    </div>
                 </div>
             </nav>
 
@@ -130,15 +136,15 @@
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.dari_tanggal, request.sampai_tanggal, request.approval FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve'";
+                                        $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal, request.approval FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve'";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
                                         <tr style="text-align:center;">
                                             <td><?php echo $row['nama']; ?></td>
                                             <td><text-muted><?php echo $row['posisi']; ?></text-muted></td>
-                                            <td ><?php echo $row['izin']?> (<?php echo $row['keterangan']?>)</td>
-                                            <td><?php echo date("j/n/y", strtotime($row['dari_tanggal'])); ?> - <?php echo date("j/n/y", strtotime($row['sampai_tanggal'])); ?></td>
+                                            <td ><?php echo $row['keterangan']; ?></td>
+                                            <td><?php echo $row['dari_tanggal']; ?> - <?php echo $row['sampai_tanggal']; ?></td>
                                         </tr>
                                         <?php
                                             }
@@ -152,28 +158,41 @@
                         <div class="card approval">
                             <h6 class="card-header">Needs Approval</h6>
                             <div class="card-body pt-2">
-                            <?php
-                                $query = "SELECT request.request_id, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip";
-                                $query_run = mysqli_query($config, $query);
-                                while($row = mysqli_fetch_array($query_run)){
-                            ?>
-                                <div class="row newreq">
-                                    <div class="col-12">
-                                        <div class="card" data-toggle="modal" data-target="#appRequest<?php echo $row['request.request_id']?>">
-                                            <div class="card-body">
-                                                <h6><b><?php echo $row['nama']; ?></b></h6>
-                                                <p><?php echo $row['status_ketidakhadiran']?> (<?php echo $row['keterangan']?>)</p>
-                                                <a href="#" class="stretched-link"></a>
-                                                <div class="footer text-muted">
-                                                    <?php echo date("j/n/y", strtotime($row['dari_tanggal'])); ?> - <?php echo date("j/n/y", strtotime($row['sampai_tanggal'])); ?>
+                                <div class="scrollable">
+                                    <?php
+                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval=''";
+                                        $query_run = mysqli_query($config, $query);
+                                        while($row = mysqli_fetch_array($query_run)){
+                                    ?>
+                                        <div class="row newreq">
+                                            <div class="col-12">
+                                                <div class="card" style="cursor:pointer;" data-toggle="modal" data-target="#appRequest<?php echo $row['request_id']; ?>">
+                                                    <div class="card-body">
+                                                        <div class="d-flex">
+                                                            <h6><b><?php echo $row['nama']; ?></b></h6>
+                                                            <a onClick="javascript:hapus($(this));return false;" class="delreq" href="del-request2.php?request_id=<?php echo $row['request_id']; ?>" title="delete request"><span class="bi bi-x"></span></a>
+                                                        </div>
+
+                                                        <script>
+                                                            function hapus(anchor) {
+                                                                var r = confirm("Are you sure want to delete this request?");
+                                                                if (r) {
+                                                                    window.location=anchor.attr("href");
+                                                                }
+                                                            }   
+                                                        </script>
+                                                        <div class="footer text-muted">
+                                                            <?php echo $row['dari_tanggal']; ?> - <?php echo $row['sampai_tanggal']; ?>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    <?php
+                                        include 'approve-request.php';
+                                        }
+                                    ?>
                                 </div>
-                            <?php
-                                }
-                            ?>
                             </div>
                         </div>
                     </div>
@@ -191,7 +210,6 @@
                         </div>
                     </div>
                 </div>
-                <?php include 'approve-request.php';?>
             </div>
         </div>
     </div>
@@ -237,6 +255,14 @@
                         }
                     }
                 });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#appRequest').on('click', function(){
+                $('#')
+            }
+        }
     </script>
 </body>
 </html>

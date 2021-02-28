@@ -1,6 +1,7 @@
 <?php
-    include 'koneksi.php';
     session_start();
+    include("koneksi.php");
+    include 'validation.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,25 +108,35 @@
                                     <h5 class="title">Edit Profile</h5>
                                 </div>
                                 <div class="user-content">
-                                    <form class="py-2">
+                                    <?php 
+                                            if($config->connect_error){
+                                                die("Connection failed: ".$config->connect_error);
+                                            }
+
+                                            $query = "SELECT * FROM karyawan WHERE nip = '$_SESSION[id]'";
+                                            $query_run = mysqli_query($config, $query);
+                                            while($row = mysqli_fetch_array($query_run)){
+                                    ?>
+                                    <form class="py-2" action="update-profile.php" method="POST">
                                         <div class="row py-3">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" required placeholder=" ">
+                                                    <input type="hidden" class="form-control" name="nip" value="<?php echo $row['nip'];?>">
+                                                    <input type="text" class="form-control" required placeholder=" " name="username" value="<?php echo $row['username']; ?>">
                                                     <div class="underline"></div>
                                                     <label class="disabled">Username</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" required placeholder=" ">
+                                                    <input type="text" class="form-control" required placeholder=" " name="email" value="<?php echo $row['email'];?>">
                                                     <div class="underline"></div>
                                                     <label>Email</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <input type="password" class="form-control" required placeholder=" ">
+                                                    <input type="password" class="form-control" required placeholder=" " name="password" value="<?php echo $row['password'];?>">
                                                     <div class="underline"></div>
                                                     <label>Password</label>
                                                 </div>
@@ -134,25 +145,25 @@
                                         <div class="row py-2">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder=" " required>
+                                                    <input type="text" class="form-control" placeholder=" " required name="nama" value="<?php echo $row['nama'];?>">
                                                     <div class="underline"></div>
                                                     <label>Name</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" required placeholder=" ">
+                                                    <input type="text" class="form-control" readonly placeholder=" " name="posisi" value="<?php echo $row['posisi'];?>">
                                                     <div class="underline"></div>
                                                     <label>Position</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <select class="form-select" disabled style="cursor: not-allowed;">
-                                                        <option selected class="selected"></option>
-                                                        <option value="1">Super Admin</option>
-                                                        <option value="2">Admin</option>
-                                                        <option value="3">User</option>
+                                                    <select class="form-select" disabled style="cursor: unset;" name="role">
+                                                        <option value="<?php echo $row['role'];?>"><?php echo $row['role'];?></option>
+                                                        <option value="superadmin">Super Admin</option>
+                                                        <option value="admin">Admin</option>
+                                                        <option value="user">User</option>
                                                     </select>
                                                     <div class="underline"></div>
                                                     <label>Role</label>
@@ -162,27 +173,36 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" placeholder=" ">
+                                                    <input type="text" class="form-control" placeholder=" " name="alamat" value="<?php echo $row['alamat'];?>">
                                                     <div class="underline"></div>
                                                     <label>Address</label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-info">Update Profile</button>
+                                        <button type="submit" name="updateprofile" class="btn btn-info">Update Profile</button>
                                     </form>
+                                    <?php }?>
                                 </div>
                             </div>
                         </div>
+                        <?php
+                            require 'koneksi.php';
+                            $query = mysqli_query($config, "SELECT * FROM karyawan WHERE nip = '$_SESSION[id]'") or die(mysqli_error());
+                            while($row = mysqli_fetch_array($query)){
+                        ?>
                         <div class="col-md-4 py-5">
                             <div class="card h-100" style="text-align: center;">
                                 <div class="card-body userinfo">
                                     <img src="img/img.png" class="img-fluid rounded-circle mb-3" alt="">
-                                    <h4>Name / Username</h4>
-                                    <h5 class="card-text">Position</h5>
+                                    <h4><?php echo $row['nama'];?> / <?php echo $row['username']; ?></h4>
+                                    <h5 class="card-text"><?php echo $row['posisi'];?></h5>
                                     <p>About</p>
                                 </div>
                             </div>
                         </div>
+                        <?php
+                            }
+                        ?>
                     </div>
                 </div>
             </main>

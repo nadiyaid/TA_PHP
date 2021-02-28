@@ -1,6 +1,7 @@
 <?php
     include 'koneksi.php';
     session_start();
+    include 'validation.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -106,21 +107,42 @@
                             <div class="underline"></div>
                             <!-- <a href="#" class="btn" style="border-radius: 50%; margin-left: 10em;margin-top:-10px;padding: 5px 5px; font-size: 15pt; vertical-align: middle;">+</a> -->
                         </div>
-                        <div class="card taskundone" data-toggle="modal" data-target="#taskModal">
+                        <div class="card taskundone" data-toggle="modal" data-target="#taskModal<?php echo $row['task_id']; ?>">
                             <div class="card-body tasklist">
-                                <div class="card task1">
-                                    <div class="card-body">
-                                        <h5>Bikin Tampilan Web</h5>
-                                        <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                        <a href="#" class="stretched-link"></a>
-                                        <div class="footer text-muted">
-                                            2 Feb - 7 Feb
+                                <?php
+                                    if($config->connect_error){
+                                        die("Connection failed: ".$config->connect_error);
+                                    }
+
+                                    $query = "SELECT * FROM task WHERE status = 'undone' AND nip = '$_SESSION[id]'";
+                                    $query_run = mysqli_query($config, $query);
+                                    while($row = mysqli_fetch_array($query_run)){
+                                ?>
+                                <div class="row pb-2">
+                                    <div class="col-12">
+                                        <div class="card task1">
+                                            <div class="card-body" style="cursor:pointer;" data-toggle="modal" data-target="#taskModal<?php echo $row['task_id']; ?>">
+                                                <div class="d-flex">
+                                                    <h5><?php echo $row['nama_task']; ?></h5>
+                                                </div>
+                                                <p><?php echo $row['deskripsi']; ?></p>
+                                            </div>
+                                            <div class="card-footer text-muted d-flex">
+                                                <?php echo date("j M", strtotime($row['start_date'])); ?> - 
+                                                <?php echo date("j M", strtotime($row['end_date'])); ?>
+
+                                                <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="Assign to" data-trigger="hover" data-placement="bottom">
+                                                    <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <?php include 'details-task-user.php'; }?>
                             </div>
                         </div>
                     </div>
+                
                     <div class="col-md-4 py-3">
                         <div class="header progress-task px-2">
                             <h5>Inprogress</h5>
@@ -128,18 +150,40 @@
                         </div>
                         <div class="card taskundone">
                             <div class="card-body tasklist">
-                                <div class="card task1">
-                                    <div class="card-body">
-                                        <h5>Bikin Tampilan Web</h5>
-                                        <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                        <div class="footer text-muted">
-                                            2/2/21 - 7/2/21
+                                <?php
+                                    if($config->connect_error){
+                                        die("Connection failed: ".$config->connect_error);
+                                    }
+
+                                    $query = "SELECT * FROM task WHERE status = 'progress'";
+                                    $query_run = mysqli_query($config, $query);
+                                    while($row = mysqli_fetch_array($query_run)){
+                                ?>
+                                <div class="row pb-2">
+                                    <div class="col-12">
+                                        <div class="card task1">
+                                            <div class="card-body" style="cursor:pointer;" data-toggle="modal" data-target="#taskModal<?php echo $row['task_id']; ?>">
+                                                <div class="d-flex">
+                                                    <h5><?php echo $row['nama_task']; ?></h5>
+                                                </div>
+                                                <p><?php echo $row['deskripsi']; ?></p>
+                                            </div>
+                                            <div class="card-footer text-muted d-flex">
+                                                <?php echo date("j M", strtotime($row['start_date'])); ?> - 
+                                                <?php echo date("j M", strtotime($row['end_date'])); ?>
+
+                                                <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="Assign to" data-trigger="hover" data-placement="bottom">
+                                                    <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <?php include 'details-task-user.php'; }?>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-4 py-3">
                         <div class="header complete-task px-2">
                             <h5>Completed</h5>
@@ -147,73 +191,36 @@
                         </div>
                         <div class="card taskundone">
                             <div class="card-body tasklist">
-                                <div class="card task1">
-                                    <div class="card-body">
-                                        <h5>Bikin Tampilan Web</h5>
-                                        <p>Bikin tampilan program web pake html css bootstrap react</p>
-                                        <a href="#" class="stretched-link"></a>
-                                        <div class="footer text-muted">
-                                            2/2/21 - 7/2/21
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Modal -->
-                <div id="taskModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="myModalLabel">Task Details</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row h-100">
-                                    <div class="col-8 px-4">
-                                        <div class="task-header d-flex">
-                                            <h5>Bikin Tampilan Web</h5>
-                                            <button type="button" id="done" class="btn-cancel tooltip-test" title="Mark as Done">
-                                                <span class="bi bi-check2 "></span>
-                                            </button>
-                                        </div>
-                                        <p class="tooltip-test" title="Task Description">Bikin tampilan program web pake html css bootstrap react</p>
-                                        <div class="comment">
-                                            <label>Comment</label>
-                                            <textarea class="form-control" disabled></textarea>
-                                        </div>
-                                        <div class="progbar">Progress</div>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-4 updates">
-                                        <div class="card">
-                                            <div class="card-body time-task">
-                                                <div class="row">
-                                                    <div class="col-lg-6 division">
-                                                        <p class="text-muted">Created At</p>
-                                                        <p class="font-weight-bold">Feb 2, 1:02 pm</p>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <p class="text-muted">Due Date</p>
-                                                        <p class="font-weight-bold">Feb 7, 1:02 pm</p>
-                                                    </div>
+                                <?php
+                                    if($config->connect_error){
+                                        die("Connection failed: ".$config->connect_error);
+                                    }
+
+                                    $query = "SELECT * FROM task WHERE status = 'complete'";
+                                    $query_run = mysqli_query($config, $query);
+                                    while($row = mysqli_fetch_array($query_run)){
+                                ?>
+                                <div class="row pb-2">
+                                    <div class="col-12">
+                                        <div class="card task1">
+                                            <div class="card-body" style="cursor:pointer;" data-toggle="modal" data-target="#taskModal<?php echo $row['task_id']; ?>">
+                                                <div class="d-flex">
+                                                    <h5><?php echo $row['nama_task']; ?></h5>
+                                                </div>
+                                                <p><?php echo $row['deskripsi']; ?></p>
+                                            </div>
+                                            <div class="card-footer text-muted d-flex">
+                                                <?php echo date("j M", strtotime($row['start_date'])); ?> - 
+                                                <?php echo date("j M", strtotime($row['end_date'])); ?>
+
+                                                <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="Assign to" data-trigger="hover" data-placement="bottom">
+                                                    <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>                        
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
-                                <a href="update-task.php" class="btn btn-primary">Update</a>
+                                <?php include 'details-task-user.php'; }?>
                             </div>
                         </div>
                     </div>
@@ -233,6 +240,21 @@
             $el.find('span').toggleClass('bi-check2 bi-x');
         }
     )});
+    </script>
+
+    <?php $q = mysqli_query($config, "SELECT karyawan.nama FROM karyawan INNER JOIN task ON karyawan.nip=task.nip WHERE task_id = '2'");
+            $data = mysqli_fetch_array($q) ?>
+    <script>
+        $(document).ready(function(){
+            $(".userPopover").attr({
+                "data-toggle":"popover",
+                "data-content":"user",
+                "data-trigger":"focus"
+                });
+            
+            $("[data-toggle=tooltip]").tooltip();
+            $("[data-toggle=popover]").popover(); 
+        });
     </script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 <?php
     include 'koneksi.php';
     session_start();
+    include 'validation.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,9 +105,14 @@
                 </div> -->
 
                 <div class="user-wrapper dropdown">
-                    <?php
-                        include 'user-wrapper.php';
-                    ?>
+                    <div>
+                        <a href="profle-superadmin.php" class="user"><img src="img/img.png" width="40px" height="40px" alt="">
+                        <?=$_SESSION['name'];?></a>
+                        <div class="dropdown-content">
+                            <a href="profile-superadmin.php" class="profile">Profile</a>
+                            <a href="logout.php">Logout</a>
+                        </div>
+                    </div>
                 </div>
             </nav>
 
@@ -153,17 +159,15 @@
                                             <td class="details-btn">
                                                 <button data-toggle="modal" data-target="#editUser<?php echo $row['nip']; ?>" class="btn btn-info detbtn">Edit</button>
 
-                                                <a href="del-user.php?nip=<?php echo $row['nip']; ?>" class="btn delbtn" onClick="hapus()">Delete</a>
+                                                <a href="del-user.php?nip=<?php echo $row['nip']; ?>" class="btn delbtn" onClick="javascript:hapus($(this));return false;">Delete</a>
                                                 
                                                 <script>
-                                                    function hapus() {
+                                                    function hapus(anchor) {
                                                         var r = confirm("Are you sure want to delete this user?");
-                                                        if (r == false) {
-                                                            window.close();
-                                                        } else if (r == true) {
-                                                            window.alert("User successfully deleted!");
+                                                        if (r) {
+                                                            window.location=anchor.attr("href");
                                                         }
-                                                    }
+                                                    }   
                                                 </script>
                                             </td>
                                         </tr>
