@@ -10,9 +10,12 @@
         $add = mysqli_query($config, $sql);
 
         if($add){
-            echo "Successfully added";
             header("location:attendance-superadmin.php");
+            include 'alert.php';
+            echo $alert;
+            return "<script type='text/javascript'>alert('$alert');</script>";
         }
+
         else{
             echo "ERROR in adding data" ;
         }

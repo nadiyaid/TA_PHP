@@ -160,7 +160,7 @@
                             <div class="card-body pt-2">
                                 <div class="scrollable">
                                     <?php
-                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval=''";
+                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval=''";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
@@ -182,7 +182,7 @@
                                                             }   
                                                         </script>
                                                         <div class="footer text-muted">
-                                                            <?php echo $row['dari_tanggal']; ?> - <?php echo $row['sampai_tanggal']; ?>
+                                                            <?php echo date("d/m/Y",strtotime($row['dari_tanggal'])); ?> - <?php echo date("d/m/Y", strtotime($row['sampai_tanggal'])); ?>
                                                         </div>
                                                     </div>
                                                 </div>

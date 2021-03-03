@@ -125,18 +125,16 @@
                                     <div class="maintext">Request</div>
                                     <div class="subtext">for paid leave</div>
                                 </a>
-                                <a href="add-absen.php" id="hide" type="button" class="btn btn-checkin" name="checkin">Check-In</a>
-                                <a href="add-absen-out.php" type="button" class="btn btn-danger btn-checkout" onClick="checkout()">Check-out</a>
+                                <a href="add-absen.php" id="hide" type="button" class="btn btn-checkin" name="checkin" onclick = "alert('Successfully recorded!')">Check-In</a>
+                                <a href="add-absen-out.php" onclick="checkout()" type="button" class="btn btn-danger btn-checkout" >Check-out</a>
 
                                 <script>
-                                    function checkout() {
+                                    function checkout(anchor) {
                                         var r = confirm("Are you sure want to checkout?");
-                                        if (r == false) {
-                                            window.close();
-                                        } else if (r == true) {
-                                            window.alert("Successfully checkout!");
+                                        if (r) {
+                                            window.location=anchor.attr("href");
                                         }
-                                    }
+                                    }   
                                 </script>
                             </div>
                         </div>
@@ -265,13 +263,8 @@
                                     <button type="submit" class="btn btn-primary" name="request"
                                     onClick="request()">Request</button>
                                     <script>
-                                        function request() {
-                                            var r = confirm("Are you sure want to request leave?");
-                                            if (r == false) {
-                                                window.close();
-                                            } else if (r == true) {
-                                                window.alert("Successfully requested!");
-                                            }
+                                        function request(){
+                                            alert ("Successfully requested!");
                                         }
                                     </script>
                                 </div>

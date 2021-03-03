@@ -490,6 +490,10 @@ header label span{
     font-weight: 600;
 }
 
+.alert-success.hide{
+    display:none;
+}
+
 .newreq a{
     margin-left: auto;
     font-size: 15pt;
@@ -512,6 +516,11 @@ header label span{
 .reqinfo p{
     margin-left: auto;
     color:#FB9005;
+}
+
+.reqinfo p.decline{
+    margin-left: auto;
+    color:#E63B37;
 }
 
 .appRequest input[type="date"], .appRequest textarea{
@@ -965,6 +974,17 @@ button.close:focus, button.close:active{
  
 .dropdown-menu .dropdown-content a:hover {
     background-color: #f1f1f1;
+}
+
+.declined .details-btn .detbtn{
+    font-size: 9pt;
+    outline: none;
+    background-color:#39ace7;
+    border: none;
+}
+
+.declined .detbtn:hover{
+    background-color:#2c8cbd;
 }
 
 /*rekap-user delete*/

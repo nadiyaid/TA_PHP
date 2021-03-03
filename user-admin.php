@@ -184,7 +184,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" name="updateprofile" class="btn btn-info">Update Profile</button>
+                                        <button type="submit" name="updateprofile" class="btn btn-info" onclick="update()">Update Profile</button>
+
+                                        <script>
+                                            function update(){
+                                                alert ("Successfully updated!");
+                                            }
+                                        </script>
                                     </form>
                                     <?php }?>
                                 </div>

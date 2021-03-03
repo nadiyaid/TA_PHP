@@ -145,7 +145,7 @@
                             <div class="card-body pt-2">
                                 <div class="scrollable">
                                     <?php
-                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval=''";
+                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval=''";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
@@ -168,7 +168,7 @@
                                                     </script>
                                                     <p><?php echo $row['keterangan']; ?></p>
                                                     <div class="footer text-muted">
-                                                        <?php echo $row['dari_tanggal']; ?> - <?php echo $row['sampai_tanggal']; ?>
+                                                        <?php echo date("d/m/Y",strtotime($row['dari_tanggal'])); ?> - <?php echo date("d/m/Y", strtotime($row['sampai_tanggal'])); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -184,34 +184,37 @@
                     </div>
                     <div class="col-6 pl-1">
                         <div class="card informasi" style="border: none;">
-                            <div class="card-header pt-4">
-                                <h5 class="card-title">Employee of the Month</h5>
-                                <text-muted class="card-text">Based on attendance</text-muted>
-                            </div>
+                            <h5 class="card-header pt-4 pb-3">Declined Request</h5>
                             <div class="card-body py-0 tabinfo">
-                                <table class="table table-hover">
+                                <table class="table table-hover declined">
                                     <thead>
                                         <tr>
                                             <th>NAME</th>
                                             <th>POSITION</th>
-                                            <th class="total_att">TOTAL ATTENDANCE</th>
+                                            <th>LEAVE</th>
+                                            <th>DATE</th>
+                                            <th>ACTION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php
+                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval='decline'";
+                                        $query_run = mysqli_query($config, $query);
+                                        while($row = mysqli_fetch_array($query_run)){
+                                    ?>
                                         <tr>
-                                            <td>Nadiya Ivana</td>
-                                            <td><text-muted>Front end</text-muted></td>
-                                            <td class="total_att">
-                                                23
+                                            <td><?php echo $row['nama']; ?></td>
+                                            <td><text-muted><?php echo $row['posisi']; ?></text-muted></td>
+                                            <td ><?php echo $row['keterangan']; ?></td>
+                                            <td><?php echo date("d/m/Y",strtotime($row['dari_tanggal'])); ?> - <?php echo date("d/m/Y", strtotime($row['sampai_tanggal'])); ?>
+                                            <td class="details-btn">
+                                                <button data-toggle="modal" data-target="#appDecline<?php echo $row['request_id']; ?>" class="btn btn-info detbtn">Edit</button>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>Fikri Alfaiq</td>
-                                            <td><text-muted>Back end</text-muted></td>
-                                            <td class="total_att">
-                                                19
-                                            </td>
-                                        </tr>       
+                                        <?php
+                                            include 'approve-decline.php';
+                                            }
+                                        ?> 
                                     </tbody>
                                 </table>                                
                             </div>

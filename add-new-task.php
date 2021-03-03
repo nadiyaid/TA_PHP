@@ -17,8 +17,7 @@
         
 
         if($add){
-            echo "Successfully added";
-            header("location:task-admin.php");
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
         }
         else{
             echo "ERROR in adding" ;

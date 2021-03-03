@@ -1,4 +1,4 @@
-<div id="appRequest<?php echo $row['request_id']; ?>" class="modal fade" role="dialog">
+<div id="appDecline<?php echo $row['request_id']; ?>" class="modal fade" role="dialog">
     <div class="appRequest modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,7 +13,7 @@
                         <input class="form-control" type="hidden" name="request_id" value="<?php echo $row['request_id']; ?>">
                         <div class="req-header d-flex">
                             <span class="bi bi-calendar-date"><text-muted> <?php echo date("l, d M Y", strtotime($row['tanggal_request']));?></span>
-                            <p class="stat">Waiting</p>
+                            <p class="decline">Declined</p>
                         </div>
                         <div class="form-group d-flex req-date">
                             <div class="fromdate">

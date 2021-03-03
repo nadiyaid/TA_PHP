@@ -10,7 +10,6 @@
         $add = mysqli_query($config, $sql);
 
         if($add){
-            echo "Successfully added";
             header("location:attendance-admin.php");
         }
         else{

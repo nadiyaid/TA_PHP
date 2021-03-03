@@ -155,7 +155,7 @@
                                         die("Connection failed: ".$config->connect_error);
                                     }
 
-                                    $query = "SELECT * FROM task WHERE status = 'progress'";
+                                    $query = "SELECT * FROM task WHERE status = 'progress' AND nip = '$_SESSION[id]'";
                                     $query_run = mysqli_query($config, $query);
                                     while($row = mysqli_fetch_array($query_run)){
                                 ?>
@@ -196,7 +196,7 @@
                                         die("Connection failed: ".$config->connect_error);
                                     }
 
-                                    $query = "SELECT * FROM task WHERE status = 'complete'";
+                                    $query = "SELECT * FROM task WHERE status = 'complete' AND nip = '$_SESSION[id]'";
                                     $query_run = mysqli_query($config, $query);
                                     while($row = mysqli_fetch_array($query_run)){
                                 ?>

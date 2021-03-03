@@ -203,7 +203,13 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" name="addtask">Add Task</button>
+                                        <button type="submit" class="btn btn-primary" name="addtask" onclick="add()">Add Task</button>
+
+                                        <script>
+                                            function add(){
+                                                alert ("Successfully added!");
+                                            }
+                                        </script>
                                     </div>
                                 </form>
                             </div>

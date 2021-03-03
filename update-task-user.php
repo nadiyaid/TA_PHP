@@ -147,7 +147,12 @@
                                     </div>
                                     <div class="button-footer d-flex px-5">
                                         <a href="javascript:history.go(-1)" class="btn btn-close">Close</a>
-                                        <button type="submit" name="updatetask" class="btn btn-primary">Update</button>
+                                        <button type="submit" name="updatetask" class="btn btn-primary" onclick="update()">Update</button>
+                                        <script>
+                                            function update(){
+                                                alert ("Successfully updated!");
+                                            }
+                                        </script>
                                     </div>
                                 </form>
                             </div>

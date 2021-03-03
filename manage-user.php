@@ -160,7 +160,7 @@
                                                 <button data-toggle="modal" data-target="#editUser<?php echo $row['nip']; ?>" class="btn btn-info detbtn">Edit</button>
 
                                                 <a href="del-user.php?nip=<?php echo $row['nip']; ?>" class="btn delbtn" onClick="javascript:hapus($(this));return false;">Delete</a>
-                                                
+                                                 
                                                 <script>
                                                     function hapus(anchor) {
                                                         var r = confirm("Are you sure want to delete this user?");

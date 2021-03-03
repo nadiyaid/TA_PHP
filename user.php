@@ -29,6 +29,7 @@
     
      <!-- JavaScript Bundle with Popper -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
      <!-- bootstrap js -->
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -101,7 +102,7 @@
 
             <div class="user-content">
                 <div class="container-fluid">
-                    <div class="row py-3">
+                    <div class="row py-3" style="z-index:-1;">
                         <div class="col-md-8 py-5">
                             <div class="card px-3">
                                 <div class="header">
@@ -179,7 +180,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" name="updateprofile" class="btn btn-info">Update Profile</button>
+                                        <button type="submit" name="updateprofile" class="btn btn-info" onclick="update()">Update Profile</button>
+
+                                        <script>
+                                            function update(){
+                                                alert ("Successfully updated!");
+                                            }
+                                        </script>
                                     </form>
                                     <?php }?>
                                 </div>
