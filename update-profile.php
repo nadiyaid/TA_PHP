@@ -13,6 +13,7 @@
         $query = "UPDATE karyawan SET nama = '$nama', alamat = '$alamat', posisi='$posisi', username = '$username', password = MD5('$password'), email = '$email' WHERE nip = '$nip'";
         mysqli_query($config, $query) or die(mysqli_error($config));
 
-        header("location: user.php");
+        echo "<script language='javascript'>alert('Successfully updated!')</script>";
+        echo "<script language='javascript'>window.location.replace('user.php'); </script>";
     }
 ?>

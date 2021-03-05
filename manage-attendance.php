@@ -168,7 +168,7 @@
                                                     </script>
                                                     <p><?php echo $row['keterangan']; ?></p>
                                                     <div class="footer text-muted">
-                                                        <?php echo date("d/m/Y",strtotime($row['dari_tanggal'])); ?> - <?php echo date("d/m/Y", strtotime($row['sampai_tanggal'])); ?>
+                                                        <?php echo !isset($row['dari_tanggal']) ? '' : date("j/n/y",strtotime($row['dari_tanggal'])); ?> - <?php echo !isset($row['sampai_tanggal']) ? '' : date("j/n/y", strtotime($row['sampai_tanggal'])); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -206,7 +206,7 @@
                                             <td><?php echo $row['nama']; ?></td>
                                             <td><text-muted><?php echo $row['posisi']; ?></text-muted></td>
                                             <td ><?php echo $row['keterangan']; ?></td>
-                                            <td><?php echo date("d/m/Y",strtotime($row['dari_tanggal'])); ?> - <?php echo date("d/m/Y", strtotime($row['sampai_tanggal'])); ?>
+                                            <td><?php echo !isset($row['dari_tanggal']) ? '' : date("d/m/Y",strtotime($row['dari_tanggal'])); ?> - <?php echo !isset($row['sampai_tanggal']) ? '' : date("d/m/Y", strtotime($row['sampai_tanggal'])); ?>
                                             <td class="details-btn">
                                                 <button data-toggle="modal" data-target="#appDecline<?php echo $row['request_id']; ?>" class="btn btn-info detbtn">Edit</button>
                                             </td>

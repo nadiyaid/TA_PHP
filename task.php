@@ -114,7 +114,7 @@
                                         die("Connection failed: ".$config->connect_error);
                                     }
 
-                                    $query = "SELECT * FROM task WHERE status = 'undone' AND nip = '$_SESSION[id]'";
+                                    $query = "SELECT task.*, karyawan.nama FROM task INNER JOIN karyawan ON task.nip=karyawan.nip WHERE status = 'undone' AND task.nip = '$_SESSION[id]'";
                                     $query_run = mysqli_query($config, $query);
                                     while($row = mysqli_fetch_array($query_run)){
                                 ?>
@@ -132,7 +132,8 @@
                                                 <?php echo date("j M", strtotime($row['end_date'])); ?>
 
                                                 <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="Assign to" data-trigger="hover" data-placement="bottom">
-                                                    <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a>
+                                                    <!-- <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a> -->
+                                                    <p><?php echo $row['nama']; ?></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,7 +156,7 @@
                                         die("Connection failed: ".$config->connect_error);
                                     }
 
-                                    $query = "SELECT * FROM task WHERE status = 'progress' AND nip = '$_SESSION[id]'";
+                                    $query = "SELECT task.*, karyawan.nama FROM task INNER JOIN karyawan ON task.nip=karyawan.nip WHERE status = 'progress' AND task.nip = '$_SESSION[id]'";
                                     $query_run = mysqli_query($config, $query);
                                     while($row = mysqli_fetch_array($query_run)){
                                 ?>
@@ -173,7 +174,8 @@
                                                 <?php echo date("j M", strtotime($row['end_date'])); ?>
 
                                                 <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="Assign to" data-trigger="hover" data-placement="bottom">
-                                                    <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a>
+                                                    <!-- <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a> -->
+                                                    <p><?php echo $row['nama']; ?></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -196,7 +198,7 @@
                                         die("Connection failed: ".$config->connect_error);
                                     }
 
-                                    $query = "SELECT * FROM task WHERE status = 'complete' AND nip = '$_SESSION[id]'";
+                                    $query =  "SELECT task.*, karyawan.nama FROM task INNER JOIN karyawan ON task.nip=karyawan.nip WHERE status = 'done' AND task.nip = '$_SESSION[id]'";
                                     $query_run = mysqli_query($config, $query);
                                     while($row = mysqli_fetch_array($query_run)){
                                 ?>
@@ -214,7 +216,8 @@
                                                 <?php echo date("j M", strtotime($row['end_date'])); ?>
 
                                                 <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="Assign to" data-trigger="hover" data-placement="bottom">
-                                                    <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a>
+                                                    <!-- <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a> -->
+                                                    <p><?php echo $row['nama']; ?></p>
                                                 </div>
                                             </div>
                                         </div>

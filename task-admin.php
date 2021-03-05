@@ -114,7 +114,7 @@
                                         die("Connection failed: ".$config->connect_error);
                                     }
 
-                                    $query = "SELECT * FROM task WHERE status = 'undone'";
+                                    $query = "SELECT task.*, karyawan.nama FROM task INNER JOIN karyawan ON task.nip=karyawan.nip WHERE status = 'undone'";
                                     $query_run = mysqli_query($config, $query);
                                     while($row = mysqli_fetch_array($query_run)){
                                 ?>
@@ -142,7 +142,8 @@
                                                 <?php echo date("j M", strtotime($row['end_date'])); ?>
 
                                                 <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="Assign to" data-trigger="hover" data-placement="bottom">
-                                                    <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a>
+                                                    <!-- <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a> -->
+                                                    <p><?php echo $row['nama']; ?></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -188,7 +189,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Assign to:</label>
-                                            <select class="form-control" name="user">
+                                            <select class="form-control" name="user" required>
                                             <option selected class="selected"></option>
                                             <?php
                                                 $q_subt = mysqli_query($config, "SELECT * FROM karyawan");
@@ -203,13 +204,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" name="addtask" onclick="add()">Add Task</button>
-
-                                        <script>
-                                            function add(){
-                                                alert ("Successfully added!");
-                                            }
-                                        </script>
+                                        <button type="submit" class="btn btn-primary" name="addtask">Add Task</button>
                                     </div>
                                 </form>
                             </div>
@@ -227,7 +222,7 @@
                                         die("Connection failed: ".$config->connect_error);
                                     }
 
-                                    $query = "SELECT * FROM task WHERE status = 'progress'";
+                                    $query =  "SELECT task.*, karyawan.nama FROM task INNER JOIN karyawan ON task.nip=karyawan.nip WHERE status = 'progress'";
                                     $query_run = mysqli_query($config, $query);
                                     while($row = mysqli_fetch_array($query_run)){
                                 ?>
@@ -255,7 +250,8 @@
                                                 <?php echo date("j M", strtotime($row['end_date'])); ?>
 
                                                 <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="Assign to" data-trigger="hover" data-placement="bottom">
-                                                    <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a>
+                                                    <!-- <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a> -->
+                                                    <p><?php echo $row['nama']; ?></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -277,7 +273,7 @@
                                         die("Connection failed: ".$config->connect_error);
                                     }
 
-                                    $query = "SELECT * FROM task WHERE status = 'complete'";
+                                    $query =  "SELECT task.*, karyawan.nama FROM task INNER JOIN karyawan ON task.nip=karyawan.nip WHERE status = 'done'";
                                     $query_run = mysqli_query($config, $query);
                                     while($row = mysqli_fetch_array($query_run)){
                                 ?>
@@ -305,7 +301,8 @@
                                                 <?php echo date("j M", strtotime($row['end_date'])); ?>
 
                                                 <div class="assign" style="margin-left: auto;" data-toggle="tooltip" title="Assign to" data-trigger="hover" data-placement="bottom">
-                                                    <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a>
+                                                    <!-- <a href="#"class="userPopover"><img src="img/img4.png" alt="" width="30" height="30" style="border-radius: 50%;"></a> -->
+                                                    <p><?php echo $row['nama']; ?></p>
                                                 </div>
                                             </div>
                                         </div>

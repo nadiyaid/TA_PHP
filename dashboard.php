@@ -249,12 +249,32 @@
                 
                     // The data for our dataset
                     data: {
-                        labels: ['unpaid', 'izin', 'sakit', 'hadir', 'cuti'],
+                        labels: ['hadir', 'izin', 'sakit', 'cuti', 'unpaid'],
                         datasets: [{
                             label: 'Absensi',
-                            data: [1, 3, 3, 17, 7],
-                            backgroundColor: ['#FF6A6A','#FFC83A','#f7f725','#79D2DE','#A660FF'],
-                            borderColor: ['#FF6A6A','#FFC83A','#f7f725','#79D2DE','#A660FF']
+                            data: [
+                            <?php
+                            $hadir = mysqli_query($config, "select waktu_masuk from absensi where nip = '$_SESSION[id]'");
+                            echo mysqli_num_rows($hadir);
+                            ?>,
+
+                            <?php
+                            $izin = mysqli_query($config, "select * from request where status_ketidakhadiran = '1' and nip = '$_SESSION[id]'");
+                            echo mysqli_num_rows($izin);
+                            ?>,
+
+                            <?php
+                            $sakit = mysqli_query($config, "select * from request where status_ketidakhadiran = '2' and nip = '$_SESSION[id]'");
+                            echo mysqli_num_rows($sakit);
+                            ?>,
+
+                            <?php
+                            $cuti = mysqli_query($config, "select * from request where status_ketidakhadiran = '3' and nip = '$_SESSION[id]'");
+                            echo mysqli_num_rows($cuti);
+                            ?>
+                            ],
+                            backgroundColor: ['#79D2DE','#FFC83A','#f7f725','#A660FF','#FF6A6A'],
+                            borderColor: ['#79D2DE','#FFC83A','#f7f725','#A660FF','#FF6A6A']
                         }]
                     },
                 

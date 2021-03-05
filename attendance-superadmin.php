@@ -128,6 +128,13 @@
                                 <a href="add-absen.php" id="hide" type="button" class="btn btn-checkin" name="checkin" onclick = "alert('Successfully recorded!')">Check-In</a>
                                 <a href="add-absen-out.php" onclick="checkout()" type="button" class="btn btn-danger btn-checkout" >Check-out</a>
 
+                                <?php 
+                                // $now = date('Y-m-d H:i:s');
+                                //     $new_time = date("Y-m-d H:i:s", strtotime('+5 minutes', strtotime($now)));
+                                //     echo $new_time;
+                                    // echo date('H:i:s', strtotime($new_time));
+                                ?>
+
                                 <script>
                                     function checkout(anchor) {
                                         var r = confirm("Are you sure want to checkout?");

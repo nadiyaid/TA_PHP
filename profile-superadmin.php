@@ -153,7 +153,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <input type="password" class="form-control" required placeholder=" " name="password" value="<?php echo $row['password'];?>">
+                                                    <input type="password" class="form-control" required placeholder=" " name="password">
                                                     <div class="underline"></div>
                                                     <label>Password</label>
                                                 </div>

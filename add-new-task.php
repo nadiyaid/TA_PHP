@@ -17,10 +17,12 @@
         
 
         if($add){
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            echo "<script language='javascript'>alert('Task successfully added!')</script>";
+            echo "<script language='javascript'>window.location.replace('task-admin.php'); </script>";
         }
         else{
-            echo "ERROR in adding" ;
+            echo "<script language='javascript'>alert('ERROR in adding data')</script>";
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
         }
     }
 ?>

@@ -29,6 +29,7 @@
     
      <!-- JavaScript Bundle with Popper -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
      <!-- bootstrap js -->
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -108,9 +109,15 @@
                                     <div class="maintext">Request</div>
                                     <div class="subtext">for paid leave</div>
                                 </a>
-                                <a href="add-absen-user.php" id="hide" type="button" class="btn btn-checkin" name="checkin" onClick = "checkin()">Check-In</a>
-                                <a href="add-absen-out-user.php" type="button" class="btn btn-danger btn-checkout" onClick="javascript:checkout($(this));return false;">Check-out</a>
+                                <a href="add-absen-user.php" id="checkin" type="button" class="btn btn-checkin" name="checkin" onClick = "checkin()">Check-In</a>
+                                <a href="add-absen-out-user.php" id="checkout" type="button" class="btn btn-danger btn-checkout" onClick="javascript:checkout($(this));return false;">Check-out</a>
 
+                                <script>
+                                    $('#checkin').on('click', function(){
+                                        $('#checkin').attr("disabled", true);
+                                        $('#checkin').css("pointer-events", "none");
+                                    });
+                                </script>
                                 <script>
                                     function checkin(){
                                         alert ("Successfully recorded!");

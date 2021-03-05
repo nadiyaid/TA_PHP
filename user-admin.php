@@ -141,7 +141,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <input type="password" class="form-control" required placeholder=" " name="password" value="<?php echo $row['password'];?>">
+                                                    <input type="password" class="form-control" required placeholder=" " name="password">
                                                     <div class="underline"></div>
                                                     <label>Password</label>
                                                 </div>
@@ -157,7 +157,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" readonly placeholder=" " name="posisi" value="<?php echo $row['posisi'];?>">
+                                                    <input type="text" class="form-control" readonly placeholder=" " name="posisi" value="<?php echo $row['posisi'];?>" style="cursor:text;">
                                                     <div class="underline"></div>
                                                     <label>Position</label>
                                                 </div>
@@ -184,13 +184,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" name="updateprofile" class="btn btn-info" onclick="update()">Update Profile</button>
-
-                                        <script>
-                                            function update(){
-                                                alert ("Successfully updated!");
-                                            }
-                                        </script>
+                                        <button type="submit" name="updateprofile" class="btn btn-info">Update Profile</button>
                                     </form>
                                     <?php }?>
                                 </div>

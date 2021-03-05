@@ -172,6 +172,7 @@
                                                             <h6><b><?php echo $row['nama']; ?></b></h6>
                                                             <a onClick="javascript:hapus($(this));return false;" class="delreq" href="del-request2.php?request_id=<?php echo $row['request_id']; ?>" title="delete request"><span class="bi bi-x"></span></a>
                                                         </div>
+                                                        <p><?php echo $row['keterangan']; ?></p>
 
                                                         <script>
                                                             function hapus(anchor) {
@@ -182,7 +183,7 @@
                                                             }   
                                                         </script>
                                                         <div class="footer text-muted">
-                                                            <?php echo date("d/m/Y",strtotime($row['dari_tanggal'])); ?> - <?php echo date("d/m/Y", strtotime($row['sampai_tanggal'])); ?>
+                                                            <?php echo !isset($row['dari_tanggal']) ? '' : date("j/n/y",strtotime($row['dari_tanggal'])); ?> - <?php echo !isset($row['sampai_tanggal']) ? '' : date("j/n/y", strtotime($row['sampai_tanggal'])); ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -234,12 +235,32 @@
                 
                     // The data for our dataset
                     data: {
-                        labels: ['unpaid', 'izin', 'sakit', 'hadir', 'cuti'],
+                        labels: ['hadir', 'izin', 'sakit', 'cuti', 'unpaid'],
                         datasets: [{
                             label: 'Absensi',
-                            data: [1, 3, 3, 17, 7],
-                            backgroundColor: ['#FF6A6A','#FFC83A','#f7f725','#79D2DE','#A660FF'],
-                            borderColor: ['#FF6A6A','#FFC83A','#f7f725','#79D2DE','#A660FF']
+                            data: [
+                            <?php
+                            $hadir = mysqli_query($config, "select waktu_masuk from absensi");
+                            echo mysqli_num_rows($hadir);
+                            ?>,
+
+                            <?php
+                            $izin = mysqli_query($config, "select * from request where status_ketidakhadiran = '1'");
+                            echo mysqli_num_rows($izin);
+                            ?>,
+
+                            <?php
+                            $sakit = mysqli_query($config, "select * from request where status_ketidakhadiran = '2'");
+                            echo mysqli_num_rows($sakit);
+                            ?>,
+
+                            <?php
+                            $cuti = mysqli_query($config, "select * from request where status_ketidakhadiran = '3'");
+                            echo mysqli_num_rows($cuti);
+                            ?>
+                            ],
+                            backgroundColor: ['#79D2DE','#FFC83A','#f7f725','#A660FF','#FF6A6A'],
+                            borderColor: ['#79D2DE','#FFC83A','#f7f725','#A660FF','#FF6A6A']
                         }]
                     },
                 
@@ -255,14 +276,6 @@
                         }
                     }
                 });
-    </script>
-
-    <script>
-        $(document).ready(function(){
-            $('#appRequest').on('click', function(){
-                $('#')
-            }
-        }
     </script>
 </body>
 </html>

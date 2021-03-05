@@ -11,17 +11,20 @@
             <div class="modal-body">
                 <div class="row h-100">
                     <div class="col-8 px-4">
-                        <div class="task-header d-flex">
-                            <h5><?php echo $row['nama_task']; ?></h5>
+                        <div class="task-header">
+                            <span class="bi bi-calendar-date"><text-muted> <?php echo date("l, d M Y", strtotime($row['created_at']));?></span><text-muted> by <?php echo $row['created_by']; ?></text-muted>
+                            <div class="py-2">
+                                <h5><?php echo $row['nama_task']; ?></h5>
+                            </div>
                             <!-- <div id="ck-button">
                                 <label>
                                     <input type="checkbox" value="1">
                                     <span class="bi bi-check2 tooltip-test" title="Mark as Done"></span>
                                 </label>
                             </div> -->
-                            <button type="button" id="done" class="btn-cancel tooltip-test" title="Mark as Done">
+                            <!-- <button type="button" id="done" class="btn-cancel tooltip-test" title="Mark as Done">
                                 <span class="bi bi-check2 "></span>
-                            </button>
+                            </button> -->
                         </div>
                         <p class="tooltip-test" title="Task Description"><?php echo $row['deskripsi']; ?></p>
                         <div class="comment">

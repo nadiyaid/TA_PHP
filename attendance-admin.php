@@ -113,8 +113,8 @@
                                     <div class="maintext">Request</div>
                                     <div class="subtext">for paid leave</div>
                                 </a>
-                                <a href="add-absen-admin.php" id="hide" type="button" class="btn btn-checkin" name="checkin" onclick="checkin()">Check-In</a>
-                                <a href="add-absen-out-admin.php" type="button" class="btn btn-danger btn-checkout">Check-out</a>
+                                <a href="add-absen-admin.php" id="hide" type="button" class="btn btn-checkin" name="checkin" onclick="alert('Successfully recorded!')">Check-In</a>
+                                <a href="add-absen-out-admin.php" type="button" class="btn btn-danger btn-checkout" onclick="checkout()">Check-out</a>
                                 
                                 <script>
                                     function checkout(anchor) {

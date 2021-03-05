@@ -115,9 +115,13 @@
                                     <input type="hidden" class="form-control" name="task_id" value="<?php echo $row['task_id'];?>">
                                     <div class="task-header d-flex">
                                         <h5 class="font-weight-bold"><?php echo $row['nama_task']; ?></h5>
-                                        <button type="button" id="done" class="btn-cancel tooltip-test" title="Mark as Done">
+                                        <div class="created" style="margin-left:auto;">
+                                            <span class="bi bi-calendar-date"><text-muted> <?php echo date("l, d M Y", strtotime($row['created_at']));?></span><text-muted> by <?php echo $row['created_by']; ?></text-muted>
+                                        </div>
+                                        
+                                        <!-- <button type="button" id="done" class="btn-cancel tooltip-test" title="Mark as Done">
                                             <span class="bi bi-check2 "></span>
-                                        </button>
+                                        </button> -->
                                     </div>
                                     <p class="tooltip-test" title="Task Description"></p>
                                     <div class="form-group deskripsi">
@@ -145,6 +149,17 @@
                                         <label class="pr-2">Progress :</label>
                                         <input type="number" class="form-control" name="progress" value="<?php echo $row['percentage']; ?>">%
                                     </div>
+                                    <div class="selstatus d-flex py-2">
+                                        <label class="pr-2">Status:</label>
+                                        <div class="col-3">
+                                            <select class="form-control" name="status">
+                                                <option value="<?php echo $row['status'];?>"><?php echo $row['status'];?></option>
+                                                <option value="undone">Undone</option>
+                                                <option value="progress">Inprogress</option>
+                                                <option value="done">Done</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="button-footer d-flex px-5">
                                         <a href="javascript:history.go(-1)" class="btn btn-close">Close</a>
                                         <button type="submit" name="updatetask" class="btn btn-primary" onclick="update()">Update</button>
@@ -167,7 +182,7 @@
     </div>
     <!--/#wrapper-->
 
-    <script>
+    <!-- <script>
         $("#done").click(function() {
             $(this).toggleClass('red');
         });
@@ -177,6 +192,6 @@
             $el.find('span').toggleClass('bi-check2 bi-x');
         }
     )});
-    </script>
+    </script> -->
 </body>
 </html>

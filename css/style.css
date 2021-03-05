@@ -594,6 +594,11 @@ header label span{
     font-weight: 600;
 }
 
+.table-task .progress{
+    color: #FB9005;
+    font-weight: 600;
+}
+
 .table-task .details-btn button{
     font-size: 10pt;
     padding: 5px 8px;
@@ -659,6 +664,30 @@ button.close:focus, button.close:active{
     font-size: large;
 } */
 
+.btn-done{
+    background-color: #3AC47D;
+    font-size: 11pt;
+    color: white;
+    display:block;
+    margin-left:auto;
+}
+
+.btn-done:hover{
+    background-color: #2fa769;
+    color: white;
+}
+
+.btnsubmit{
+    position: absolute;
+    margin: -26.7rem 35rem;
+}
+
+#undone{
+    display:none;
+    margin-left: auto;
+    font-size: 11pt;
+}
+
 .btn-cancel{
     border: none;
     border-radius: 5px;
@@ -710,11 +739,6 @@ button.close:focus, button.close:active{
     padding: 2px 5px;
     border: none;
     border-radius: 5px;
-}
-
-.taskModal .modal-body .col-8 h5:hover{
-    border: 1px solid grey;
-    padding: 1px 4px;
 }
 
 .taskModal .modal-body input[type="text"]{
@@ -789,7 +813,7 @@ button.close:focus, button.close:active{
 
 .taskModal .modal-body .progbar{  
     display: flex;
-    margin-top: 10%;
+    margin-top: 1rem;
 }
 
 .modal-footer button{
@@ -1001,8 +1025,12 @@ button.close:focus, button.close:active{
     justify-content: space-between;
 }
 
-#newTask input[type="text"], #newTask textarea, #newTask input[type="date"], #newTask input[type="time"], #newTask input[type="date"]{
+#newTask input[type="text"], #newTask textarea, #newTask input[type="date"], #newTask input[type="time"], #newTask input[type="date"], #newTask select{
     font-size: 11pt;
+}
+
+#newTask select .selected{
+    display: none;
 }
 
 .card.taskundone{
@@ -1177,7 +1205,7 @@ button.close:focus, button.close:active{
 
 .update-task textarea{
     width: 80%;
-    min-height: 5rem;
+    min-height: 4rem;
     padding: 5px;
     font-size: 10pt;
 }
@@ -1238,6 +1266,15 @@ input::-webkit-inner-spin-button {
     position: relative;
     margin-top: 5px;
     
+}
+
+.selstatus select{
+    font-size: 11pt;
+    padding: 2px;
+}
+
+.selstatus select:focus{
+    padding: 7px 6px;
 }
 
 /* .search-wrapper{
