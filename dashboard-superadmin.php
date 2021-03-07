@@ -118,35 +118,40 @@
 
             <div class="container">
                 <div class="row pt-4 pb-2">
-                    <div class="col-6">
+                    <div class="col-7">
                         <div class="card informasi" style="border: none;">
                             <div class="card-header pt-4">
                                 <h5 class="card-title">Information</h5>
                                 <text-muted class="card-text">Infromasi mengenai karyawan yang sedang izin, cuti, dan WFH</text-muted>
                             </div>
                             <div class="card-body py-0 tabinfo">
-                                <table class="table table-hover">
+                                <table class="table table-hover approved">
                                     <thead>
                                         <tr>
                                             <th>NAME</th>
                                             <th style="width:1px;">POSITION</th>
-                                            <th style="text-align:center;">LEAVE</th>
+                                            <th style="padding-left:4rem;">LEAVE</th>
                                             <th style="text-align:center;">DATE</th>
+                                            <th>ACTION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal, request.approval FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve'";
+                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve' AND request.dari_tanggal=CURDATE() or request.sampai_tanggal=CURDATE() or request.dari_tanggal is null or request.sampai_tanggal is null";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
-                                        <tr style="text-align:center;">
+                                        <tr>
                                             <td><?php echo $row['nama']; ?></td>
                                             <td><text-muted><?php echo $row['posisi']; ?></text-muted></td>
-                                            <td ><?php echo $row['keterangan']; ?></td>
-                                            <td><?php echo $row['dari_tanggal']; ?> - <?php echo $row['sampai_tanggal']; ?></td>
+                                            <td style="text-align:center;"><?php echo $row['keterangan']; ?></td>
+                                            <td style="text-align:center;"><?php echo !isset($row['dari_tanggal']) ? '' : date("d/n/y",strtotime($row['dari_tanggal'])); ?> - <?php echo !isset($row['sampai_tanggal']) ? '' : date("d/n/y", strtotime($row['sampai_tanggal'])); ?>
+                                            <td class="details-btn">
+                                                <button type="button" class="btn btn-info detbtn" data-toggle="modal" data-target="#approved<?php echo $row['request_id']; ?>">Edit</button>
+                                            </td>
                                         </tr>
                                         <?php
+                                            include 'approved.php';
                                             }
                                         ?> 
                                     </tbody>
@@ -154,7 +159,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 pl-1">
+                    <div class="col-5 pl-1">
                         <div class="card approval">
                             <h6 class="card-header">Needs Approval</h6>
                             <div class="card-body pt-2">

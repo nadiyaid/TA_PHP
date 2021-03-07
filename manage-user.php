@@ -14,6 +14,7 @@
 
     <!-- bootstrap css cdn -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
     <!-- custom css -->
     <link rel="stylesheet" href="css/style.css" />
 
@@ -26,6 +27,9 @@
 <body>
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
     
      <!-- JavaScript Bundle with Popper -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
@@ -129,7 +133,7 @@
                                     <a href="add-user.php" class="btn addbtn" data-toggle="modal" data-target="#addUser">Add New</a>
                                 </div>
 
-                                <table class="table">
+                                <table class="table" id="tblUsr">
                                     <thead>
                                         <tr>
                                             <th>NAME</th>
@@ -152,11 +156,12 @@
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
                                         <tr>
-                                            <td> <img src="img/img4.png" alt="" width="40px" height="40px"> &nbsp; <?php echo $row['nama']; ?></td>
+                                            <!-- <td> <img src="img/img4.png" alt="" width="40px" height="40px"> &nbsp; <?php echo $row['nama']; ?></td> -->
+                                            <td> <?php echo $row['nama']; ?></td>
                                             <td> <text-muted> <?php echo $row['posisi']; ?></text-muted></td>
                                             <td> <?php echo $row['email']; ?></td>
                                             <td> <?php echo $row['role']; ?></td>
-                                            <td class="details-btn">
+                                            <td style="text-align: center;" class="details-btn">
                                                 <button data-toggle="modal" data-target="#editUser<?php echo $row['nip']; ?>" class="btn btn-info detbtn">Edit</button>
 
                                                 <a href="del-user.php?nip=<?php echo $row['nip']; ?>" class="btn delbtn" onClick="javascript:hapus($(this));return false;">Delete</a>
@@ -318,6 +323,15 @@
         //             $('#role').val(data[3]);
         //     });
         // });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#tblUsr').DataTable({
+                responsive: true,
+                "pageLength": 5
+            });
+        } );
     </script>
 </body>
 </html>

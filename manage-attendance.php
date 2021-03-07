@@ -184,8 +184,11 @@
                     </div>
                     <div class="col-6 pl-1">
                         <div class="card informasi" style="border: none;">
-                            <h5 class="card-header pt-4 pb-3">Declined Request</h5>
-                            <div class="card-body py-0 tabinfo">
+                            <div class="card-header pt-4">
+                                <h5 class="card-title">Declined Request</h5>
+                                <text-muted class="card-text">this week</text-muted>
+                            </div>
+                            <div class="card-body py-0 tabinfo scrollable">
                                 <table class="table table-hover declined">
                                     <thead>
                                         <tr>
@@ -198,7 +201,7 @@
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval='decline'";
+                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval='decline' AND request.tanggal_request = CURDATE() + INTERVAL - 7 DAY";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
@@ -206,7 +209,7 @@
                                             <td><?php echo $row['nama']; ?></td>
                                             <td><text-muted><?php echo $row['posisi']; ?></text-muted></td>
                                             <td ><?php echo $row['keterangan']; ?></td>
-                                            <td><?php echo !isset($row['dari_tanggal']) ? '' : date("d/m/Y",strtotime($row['dari_tanggal'])); ?> - <?php echo !isset($row['sampai_tanggal']) ? '' : date("d/m/Y", strtotime($row['sampai_tanggal'])); ?>
+                                            <td><?php echo !isset($row['dari_tanggal']) ? '' : date("d/n/y",strtotime($row['dari_tanggal'])); ?> - <?php echo !isset($row['sampai_tanggal']) ? '' : date("d/n/y", strtotime($row['sampai_tanggal'])); ?>
                                             <td class="details-btn">
                                                 <button data-toggle="modal" data-target="#appDecline<?php echo $row['request_id']; ?>" class="btn btn-info detbtn">Edit</button>
                                             </td>

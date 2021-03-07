@@ -105,9 +105,9 @@
                         <div class="header undone-task px-2">
                             <h5>Undone</h5>
                             <div class="underline"></div>
-                            <!-- <a href="#" class="btn" style="border-radius: 50%; margin-left: 10em;margin-top:-10px;padding: 5px 5px; font-size: 15pt; vertical-align: middle;">+</a> -->
+                            <a href="#" class="btn newtask" data-toggle="modal" data-target="#newTask"><span class="bi bi-plus-circle"></span></a>
                         </div>
-                        <div class="card taskundone">
+                        <div class="card taskundone scrollable">
                             <div class="card-body tasklist">
                                 <?php
                                     if($config->connect_error){
@@ -215,7 +215,7 @@
                             <h5>Inprogress</h5>
                             <div class="underline"></div>
                         </div>
-                        <div class="card taskundone">
+                        <div class="card taskundone scrollable">
                             <div class="card-body tasklist">
                                 <?php
                                     if($config->connect_error){
@@ -266,7 +266,7 @@
                             <h5>Completed</h5>
                             <div class="underline"></div>
                         </div>
-                        <div class="card taskundone">
+                        <div class="card taskundone scrollable">
                             <div class="card-body tasklist">
                                 <?php
                                     if($config->connect_error){

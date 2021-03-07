@@ -119,15 +119,15 @@
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal, request.approval FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve'";
+                                        $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal, request.approval FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve' AND request.dari_tanggal=CURDATE() or request.sampai_tanggal=CURDATE() or request.dari_tanggal is null or request.sampai_tanggal is null";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
-                                        <tr style="text-align:center;">
+                                        <tr>
                                             <td><?php echo $row['nama']; ?></td>
                                             <td><text-muted><?php echo $row['posisi']; ?></text-muted></td>
-                                            <td ><?php echo $row['keterangan']; ?></td>
-                                            <td><?php echo $row['dari_tanggal']; ?> - <?php echo $row['sampai_tanggal']; ?></td>
+                                            <td style="text-align:center;"><?php echo $row['keterangan']; ?></td>
+                                            <td style="text-align:center;"><?php echo $row['dari_tanggal']; ?> - <?php echo $row['sampai_tanggal']; ?></td>
                                         </tr>
                                         <?php
                                             }
@@ -142,7 +142,7 @@
                             <div class="header">
                                     <h5 class="title">New Task</h5>
                                 </div>
-                            <div class="card-body tabtask py-0">
+                            <div class="card-body tabtask py-0 scrollable">
                                 <table class="table w-100">
                                     <thead>
                                         <tr>

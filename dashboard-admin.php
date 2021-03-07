@@ -112,7 +112,7 @@
                                 <h5 class="card-title">Information</h5>
                                 <text-muted class="card-text">Infromasi mengenai karyawan yang sedang izin, cuti, dan WFH</text-muted>
                             </div>
-                            <div class="card-body py-0 tabinfo">
+                            <div class="card-body py-0 tabinfo scrollable">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
@@ -147,7 +147,7 @@
                             <div class="header">
                                     <h5 class="title">New Task</h5>
                                 </div>
-                            <div class="card-body tabtask py-0">
+                            <div class="card-body tabtask py-0 scrollable">
                                 <table class="table w-100">
                                     <thead>
                                         <tr>

@@ -14,6 +14,7 @@
 
     <!-- bootstrap css cdn -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
     <!-- custom css -->
     <link rel="stylesheet" href="css/style.css" />
 
@@ -26,6 +27,9 @@
 <body>
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
     
      <!-- JavaScript Bundle with Popper -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
@@ -150,7 +154,7 @@
                                     ?> 
                                     <text-muted><?php echo $data_subt['nama']; ?></text-muted>
                                 </div>
-                                <table class="table man-att">
+                                <table class="table man-att" id="tblAtt">
                                     <thead>
                                         <tr>
                                             <th>DATE</th>
@@ -224,6 +228,15 @@
                 });
             });
         });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#tblAtt').DataTable({
+                responsive: true,
+                "pageLength": 5
+            });
+        } );
     </script>
 </body>
 </html>
