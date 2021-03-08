@@ -137,7 +137,7 @@
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve' AND request.dari_tanggal=CURDATE() or request.sampai_tanggal=CURDATE() or request.dari_tanggal is null or request.sampai_tanggal is null";
+                                        $query = "SELECT request.*, karyawan.nama, karyawan.posisi FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE (request.approval='approve' AND request.dari_tanggal=CURDATE()) or (request.approval='approve' AND request.sampai_tanggal=CURDATE()) or (request.approval='approve' AND request.dari_tanggal is null) or (request.approval='approve' AND request.sampai_tanggal is null)";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
@@ -165,7 +165,7 @@
                             <div class="card-body pt-2">
                                 <div class="scrollable">
                                     <?php
-                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval=''";
+                                        $query = "SELECT request.*, karyawan.nama, karyawan.posisi FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval=''";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>

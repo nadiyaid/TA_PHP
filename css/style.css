@@ -561,6 +561,10 @@ header label span{
     padding-left: 12rem;
 }
 
+.approved .app-button{
+    padding-left: 14rem;
+}
+
 /*end*/
 
 .chart .chart2{

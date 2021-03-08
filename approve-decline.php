@@ -18,11 +18,11 @@
                         <div class="form-group d-flex req-date">
                             <div class="fromdate">
                                 <label class="col-form-label">From:</label>
-                                <input type="date" class="form-control" name="from" readonly value="<?php echo $row['dari_tanggal'];?>">
+                                <input type="date" class="form-control" name="from" value="<?php echo $row['dari_tanggal'];?>">
                             </div>
                             <div class="todate">
                                 <label class="col-form-label">To:</label>
-                                <input type="date" class="form-control" name="to" readonly  value="<?php echo $row['sampai_tanggal'];?>">
+                                <input type="date" class="form-control" name="to" value="<?php echo $row['sampai_tanggal'];?>">
                             </div>
                         </div>
                         <label class="col-form-label">Leave Type:</label>
@@ -56,20 +56,11 @@
                     </div>
                     <div class="form-group pt-1">
                         <label for="message-text" class="col-form-label">Comment:</label>
-                        <textarea class="form-control" placeholder="(Visible to Employee)"></textarea>
+                        <textarea class="form-control" placeholder="(Visible to Employee)" name="comment"><?php echo $row['comment'];?></textarea>
                     </div>
                     <div class="app-button">
-                        <button type="submit" class="btn btn-danger" name="decline" onclick="alert('Request declined');">Decline</button>
+                        <button type="submit" class="btn btn-danger" name="decline" disabled>Decline</button>
                         <button type="submit" class="btn btn-primary" name="approve" onclick="alert('Request approved');">Approve</button>
-
-                        <script>
-                            function decline(anchor) {
-                                var r = confirm("Are you sure want to decline this request?");
-                                if (r) {
-                                    window.location=anchor.attr("href");
-                                }
-                            }
-                        </script>
                     </div>
                 </div>
                 <div class="modal-footer">

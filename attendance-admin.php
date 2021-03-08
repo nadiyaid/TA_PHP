@@ -195,7 +195,7 @@
                                     <label class="col-form-label">Request for:</label>
                                     <div class="form-group radio">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="status" value="1">
+                                            <input class="form-check-input" type="radio" name="status" value="1" required>
                                             <label class="form-check-label">
                                                 Izin
                                             </label>
@@ -229,7 +229,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Substitute:</label>
-                                        <select class="form-control" name="pengganti">
+                                        <select class="form-control" name="pengganti" required>
                                         <option selected class="selected"></option>
                                         <?php
                                             $q_subt = mysqli_query($config, "SELECT * FROM karyawan");
@@ -244,12 +244,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary" name="request" onClick="request( )">Request</button>
-                                    <script>
-                                        function request(){
-                                            alert ("Successfully requested!");
-                                        }
-                                    </script>
+                                    <button type="submit" class="btn btn-primary" name="request">Request</button>
                                 </div>
                             </form>
                         </div>

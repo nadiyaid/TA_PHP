@@ -56,20 +56,11 @@
                     </div>
                     <div class="form-group pt-1">
                         <label for="message-text" class="col-form-label">Comment:</label>
-                        <textarea class="form-control" placeholder="(Visible to Employee)"></textarea>
+                        <textarea class="form-control" placeholder="(Visible to Employee)" name="comment"></textarea>
                     </div>
                     <div class="app-button">
                         <button type="submit" class="btn btn-danger" name="decline" onclick="alert('Request declined');">Decline</button>
                         <button type="submit" class="btn btn-primary" name="approve" onclick="alert('Request approved');">Approve</button>
-
-                        <script>
-                            function decline(anchor) {
-                                var r = confirm("Are you sure want to decline this request?");
-                                if (r) {
-                                    window.location=anchor.attr("href");
-                                }
-                            }
-                        </script>
                     </div>
                 </div>
                 <div class="modal-footer">

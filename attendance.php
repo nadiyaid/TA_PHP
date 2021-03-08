@@ -111,13 +111,15 @@
                                 </a>
                                 <a href="add-absen-user.php" id="checkin" type="button" class="btn btn-checkin" name="checkin" onClick = "checkin()">Check-In</a>
                                 <a href="add-absen-out-user.php" id="checkout" type="button" class="btn btn-danger btn-checkout" onClick="javascript:checkout($(this));return false;">Check-out</a>
+                                
+                                <?php 
+                                // $now = date('Y-m-d H:i:s');
+                                //     $new_time = date("Y-m-d H:i:s", strtotime('+5 minutes', strtotime($now)));
+                                //     echo $new_time;
+                                    // echo date('H:i:s', strtotime($new_time));
+                                    echo date('H:i:s');
+                                ?>
 
-                                <script>
-                                    $('#checkin').on('click', function(){
-                                        $('#checkin').attr("disabled", true);
-                                        $('#checkin').css("pointer-events", "none");
-                                    });
-                                </script>
                                 <script>
                                     function checkin(){
                                         alert ("Successfully recorded!");
@@ -157,23 +159,31 @@
                                         if($config->connect_error){
                                             die("Connection failed: ".$config->connect_error);
                                         }
-
+                                        
                                         $query = "SELECT tanggal, waktu_masuk, waktu_pulang, date_format(jam_kerja, '%H:%i') as jam_kerja FROM absensi WHERE nip = '$_SESSION[id]'";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
-                                        <tr>
-                                            <td><?php $tgl = $row['tanggal'];
-                                                echo date("D, d-M", strtotime($tgl));
-                                                ?>
-                                            </td>
-                                            <td><?php echo $row['waktu_masuk']; ?></td>
-                                            <td><?php echo $row['waktu_pulang']; ?></td>
-                                            <td><?php echo $row['jam_kerja']; ?> Hours</td>
-                                        </tr>
+                                            <tr>
+                                                <td><?php $tgl = $row['tanggal'];
+                                                    echo date("D, d-M", strtotime($tgl));
+                                                    ?>
+                                                </td>
+                                                <td><?php echo $row['waktu_masuk']; ?></td>
+                                                <td><?php echo $row['waktu_pulang']; ?></td>
+                                                <td><?php echo $row['jam_kerja']; ?> Hours</td>
+                                            </tr>
 
                                     <?php
-                                        }
+                                            $keluar = $row['waktu_pulang'];
+                                            $time = $row['waktu_masuk'];
+
+                                            if($time = date('H:i:s', strtotime($time.'+1 minutes')) && $keluar == null){
+                                                $masuk = date('H:i:s', strtotime($row['waktu_masuk'].'+3 hours'));
+                                                $sql = "UPDATE absensi SET waktu_pulang = '$masuk', jam_kerja = TIMEDIFF(waktu_pulang, waktu_masuk), updated_at = CURRENT_TIMESTAMP WHERE waktu_pulang is null AND nip = '$_SESSION[id]'";
+                                                $update = mysqli_query($config, $sql) or die(mysqli_error($config));
+                                            }
+                                        }                                        
                                     ?>
                                     </tbody>
                                 </table>
@@ -198,7 +208,7 @@
                                     <label class="col-form-label">Request for:</label>
                                     <div class="form-group radio">
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="status" value="1">
+                                            <input class="form-check-input" type="radio" name="status" value="1" required>
                                             <label class="form-check-label">
                                                 Izin
                                             </label>
@@ -233,7 +243,7 @@
                                     <div class="form-group">
                                         <label>Substitute:</label>
                                         <select class="form-control" name="pengganti">
-                                        <option selected class="selected"></option>
+                                        <option selected class="selected"required></option>
                                         <?php
                                             $q_subt = mysqli_query($config, "SELECT * FROM karyawan");
                                             while ($data_subt = mysqli_fetch_array($q_subt)) {
@@ -247,12 +257,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary" name="request" onClick="request()">Request</button>
-                                    <script>
-                                        function request(){
-                                            alert ("Successfully requested!");
-                                        }
-                                    </script>
+                                    <button type="submit" class="btn btn-primary" name="request">Request</button>
                                 </div>
                             </form>
                         </div>

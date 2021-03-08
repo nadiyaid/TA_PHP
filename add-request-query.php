@@ -30,11 +30,11 @@
         }
         
         if($add){
-            echo "Successfully requested";
-            header("location:attendance-superadmin.php");
+            echo "<script language='javascript'>alert('Successfully requested!')</script>";
+            echo "<script language='javascript'>window.location.replace('attendance-superadmin.php'); </script>";
         }
         else{
-            echo "ERROR in requesting" ;
+            echo "<script language='javascript'>alert('ERROR in requesting')</script>";
         }
     }
 ?>

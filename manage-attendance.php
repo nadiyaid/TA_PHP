@@ -145,7 +145,7 @@
                             <div class="card-body pt-2">
                                 <div class="scrollable">
                                     <?php
-                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval=''";
+                                        $query = "SELECT request.*, karyawan.nama, karyawan.posisi FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval=''";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
@@ -193,24 +193,25 @@
                                     <thead>
                                         <tr>
                                             <th>NAME</th>
-                                            <th>POSITION</th>
-                                            <th>LEAVE</th>
-                                            <th>DATE</th>
-                                            <th>ACTION</th>
+                                            <th style="width:1px;">POSITION</th>
+                                            <th style="text-align:center;">LEAVE</th>
+                                            <th style="text-align:center;">DATE</th>
+                                            <th style="padding-left:3rem;">ACTION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $query = "SELECT request.request_id, request.tanggal_request, karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, request.dari_tanggal, request.sampai_tanggal FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval='decline' AND request.tanggal_request = CURDATE() + INTERVAL - 7 DAY";
+                                        $query = "SELECT request.*, karyawan.nama, karyawan.posisi FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval='decline' AND request.tanggal_request BETWEEN SUBDATE(CURDATE(), 7) AND CURDATE()";
+                                        
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
                                         <tr>
                                             <td><?php echo $row['nama']; ?></td>
                                             <td><text-muted><?php echo $row['posisi']; ?></text-muted></td>
-                                            <td ><?php echo $row['keterangan']; ?></td>
-                                            <td><?php echo !isset($row['dari_tanggal']) ? '' : date("d/n/y",strtotime($row['dari_tanggal'])); ?> - <?php echo !isset($row['sampai_tanggal']) ? '' : date("d/n/y", strtotime($row['sampai_tanggal'])); ?>
-                                            <td class="details-btn">
+                                            <td style="text-align:center;"><?php echo $row['keterangan']; ?></td>
+                                            <td style="text-align:center;"><?php echo !isset($row['dari_tanggal']) ? '' : date("d/n/y",strtotime($row['dari_tanggal'])); ?> - <?php echo !isset($row['sampai_tanggal']) ? '' : date("d/n/y", strtotime($row['sampai_tanggal'])); ?>
+                                            <td class="details-btn" style="text-align:center;">
                                                 <button data-toggle="modal" data-target="#appDecline<?php echo $row['request_id']; ?>" class="btn btn-info detbtn">Edit</button>
                                             </td>
                                         </tr>

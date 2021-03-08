@@ -1,4 +1,4 @@
-<div id="approved<?php echo $row['request_id']; ?>" class="modal fade" role="dialog">
+<div id="approved<?php echo $row['request_id']; ?>" class="modal fade approved" role="dialog">
     <div class="appRequest modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -56,11 +56,11 @@
                     </div>
                     <div class="form-group pt-1">
                         <label for="message-text" class="col-form-label">Comment:</label>
-                        <textarea class="form-control" placeholder="(Visible to Employee)"></textarea>
+                        <textarea class="form-control" placeholder="(Visible to Employee)" name="comment"><?php echo $row['comment'];?></textarea>
                     </div>
                     <div class="app-button">
                         <button type="submit" class="btn btn-danger" name="decline" onclick="alert('Request declined');">Decline</button>
-                        <button type="submit" class="btn btn-primary" name="approve" onclick="alert('Request approved');">Approve</button>
+                        
 
                         <script>
                             function decline(anchor) {
@@ -74,6 +74,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-close" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="approve" onclick="alert('Request edited');">Edit</button>
                 </div>
             </form>
         </div>
