@@ -225,7 +225,9 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <script src="https://code.highcharts.com/modules/wordcloud.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+    <script src="https://github.com/chartjs/Chart.js/releases/download/v2.6.0/Chart.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
     <script>
         $("#done").click(function() {
@@ -293,56 +295,94 @@
     </script>
 
     <script>
-        var ctx = document.getElementById('bar').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Progress','Task Done', 'Progress', 'Task Done', 'Progress', 'Task Done'],
-                datasets: [{
-                    label: [],
-                    data: [2, 1, 3, 2, 5, 5],
-                    backgroundColor: [
-                        'rgba(255, 206, 86, 1)', //yellow
-                        'rgba(76, 191, 143, 1)', //green
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(76, 191, 143, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(76, 191, 143, 1)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(76, 191, 143, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(76, 191, 143, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(76, 191, 143, 1)'
-                    ],
-                    borderWidth: 1
-                }]
+        var months = ["jan", "feb", "mar", "apr", "mei", "jun", "jul", "ags", "sep", "okt", "nov", "des"]
+        
+        function dateData(days){
+            var d = new Date();
+            var tgl =  new Date (d.setDate(d.getDate()+(days)))
+            return tgl.getDate()+"-"+ months[tgl.getMonth()]
+        }
+
+       var barChartData = {
+        labels: [dateData(-4), dateData(-3), dateData(2), dateData(3), dateData(4), dateData(5)],
+        datasets: [
+            {
+            label: "Undone",
+            backgroundColor: "#FF6A6A",
+            borderColor: "#FF6A6A",
+            borderWidth: 1,
+            data: [
+                <?php
+                $undone = mysqli_query($config, "select status from task where nip = '$_SESSION[id]' AND status = 'undone'");
+                echo mysqli_num_rows($undone);
+                ?>
+            ]
             },
-            options: {
-                legend: {
+            {
+            label: "Progress",
+            backgroundColor: "rgba(255, 206, 86, 1)",
+            borderColor: "rgba(255, 206, 86, 1)",
+            borderWidth: 1,
+            data: [
+                <?php
+                $progress = mysqli_query($config, "select status from task where nip = '$_SESSION[id]' AND status = 'progress'");
+                echo mysqli_num_rows($progress);
+                ?>
+                ]
+            },
+            {
+            label: "Done",
+            backgroundColor: "rgba(76, 191, 143, 1)",
+            borderColor: "rgba(76, 191, 143, 1)",
+            borderWidth: 1,
+            data: [
+                <?php
+                $done = mysqli_query($config, "select status from task where nip = '$_SESSION[id]' AND status = 'done'");
+                echo mysqli_num_rows($done);
+                ?>
+            ]
+            }
+        ]
+        };
+
+        var chartOptions = {
+        responsive: true,
+        legend: {
+            position: "top"
+            // display:false
+        },
+        title: {
+            display: false,
+            text: ""
+        },
+        scales: {
+            xAxes: [{
+                gridLines: {
                     display: false
                 },
-                title:{
-                    display: true,
-                    text:''
-                },
-                scales: {
-                    xAxes: [{
-                        gridLines: {
-                            display: false
-                        },
-                        stacked: true
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
+                // type: 'time',
+                // time: {
+                //     displayFormats: {
+                //         day: 'D'
+                //     }
+                // }
+            }],
+            yAxes: [{
+            ticks: {
+                beginAtZero: true
             }
+            }]
+        }
+        }
+
+        window.onload = function() {
+        var ctx = document.getElementById("bar").getContext("2d");
+        window.myBar = new Chart(ctx, {
+            type: "bar",
+            data: barChartData,
+            options: chartOptions
         });
+        };
     </script>
 </body>
 </html>

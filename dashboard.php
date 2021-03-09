@@ -297,43 +297,45 @@
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Progress','Task Done', 'Progress', 'Task Done', 'Progress', 'Task Done'],
+                labels: ['12/3','12/4', '12/5', '12/7', '12/8', '12/8'],
                 datasets: [{
-                    label: [],
+                    label: "Undone",
                     data: [2, 1, 3, 2, 5, 5],
-                    backgroundColor: [
-                        'rgba(255, 206, 86, 1)', //yellow
-                        'rgba(76, 191, 143, 1)', //green
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(76, 191, 143, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(76, 191, 143, 1)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(76, 191, 143, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(76, 191, 143, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(76, 191, 143, 1)'
-                    ],
+                    backgroundColor: '#FF6A6A',
+                    borderColor: '#FF6A6A',
+                    borderWidth: 1
+                },
+                {
+                    label: "Progress",
+                    data: [2, 1, 3, 2, 5, 5],
+                    backgroundColor: 'rgba(255, 206, 86, 1)', //yellow
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: "Done",
+                    data: [1, 0, 3, 1, 4, 5],
+                    backgroundColor: 'rgba(76, 191, 143, 1)', //green
+                    borderColor: 'rgba(76, 191, 143, 1)',
                     borderWidth: 1
                 }]
             },
             options: {
+                tooltips: {
+                    mode: 'index'
+                },
                 legend: {
-                    display: false
+                    display: true
                 },
                 title:{
-                    display: true,
+                    display: false,
                     text:''
                 },
                 scales: {
                     xAxes: [{
                         gridLines: {
                             display: false
-                        },
-                        stacked: true
+                        }
                     }],
                     yAxes: [{
                         ticks: {

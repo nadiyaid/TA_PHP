@@ -170,6 +170,15 @@
                                         </tr>
 
                                     <?php
+                                            $keluar = $row['waktu_pulang'];
+                                            $time = $row['waktu_masuk'];
+                                            $current_time = date('H:i:s');
+
+                                            if($current_time >= date('H:i:s', strtotime($time.'+9 hours')) && $keluar == null){
+                                                $masuk = date('H:i:s', strtotime($row['waktu_masuk'].'+9 hours'));
+                                                $sql = "UPDATE absensi SET waktu_pulang = '$masuk', jam_kerja = TIMEDIFF(waktu_pulang, waktu_masuk), updated_at = CURRENT_TIMESTAMP WHERE waktu_pulang is null AND nip = '$_SESSION[id]'";
+                                                $update = mysqli_query($config, $sql) or die(mysqli_error($config));
+                                            }
                                         }
                                     ?>
                                     </tbody>

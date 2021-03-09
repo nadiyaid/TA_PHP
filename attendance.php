@@ -14,6 +14,7 @@
 
     <!-- bootstrap css cdn -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
     <!-- custom css -->
     <link rel="stylesheet" href="css/style.css" />
 
@@ -26,10 +27,12 @@
 <body>
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
     
      <!-- JavaScript Bundle with Popper -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
      <!-- bootstrap js -->
      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -111,14 +114,6 @@
                                 </a>
                                 <a href="add-absen-user.php" id="checkin" type="button" class="btn btn-checkin" name="checkin" onClick = "checkin()">Check-In</a>
                                 <a href="add-absen-out-user.php" id="checkout" type="button" class="btn btn-danger btn-checkout" onClick="javascript:checkout($(this));return false;">Check-out</a>
-                                
-                                <?php 
-                                // $now = date('Y-m-d H:i:s');
-                                //     $new_time = date("Y-m-d H:i:s", strtotime('+5 minutes', strtotime($now)));
-                                //     echo $new_time;
-                                    // echo date('H:i:s', strtotime($new_time));
-                                    echo date('H:i:s');
-                                ?>
 
                                 <script>
                                     function checkin(){
@@ -145,7 +140,7 @@
                                     <h5 class="title">Daily Attendance</h5>
                                     <text-muted>for a week</text-muted>
                                 </div>
-                                <table class="table">
+                                <table class="table" id="tblAtt">
                                     <thead>
                                         <tr>
                                             <th>DATE</th>
@@ -177,13 +172,14 @@
                                     <?php
                                             $keluar = $row['waktu_pulang'];
                                             $time = $row['waktu_masuk'];
+                                            $current_time = date('H:i:s');
 
-                                            if($time = date('H:i:s', strtotime($time.'+1 minutes')) && $keluar == null){
-                                                $masuk = date('H:i:s', strtotime($row['waktu_masuk'].'+3 hours'));
+                                            if($current_time >= date('H:i:s', strtotime($time.'+9 hours')) && $keluar == null){
+                                                $masuk = date('H:i:s', strtotime($row['waktu_masuk'].'+9 hours'));
                                                 $sql = "UPDATE absensi SET waktu_pulang = '$masuk', jam_kerja = TIMEDIFF(waktu_pulang, waktu_masuk), updated_at = CURRENT_TIMESTAMP WHERE waktu_pulang is null AND nip = '$_SESSION[id]'";
                                                 $update = mysqli_query($config, $sql) or die(mysqli_error($config));
                                             }
-                                        }                                        
+                                        }
                                     ?>
                                     </tbody>
                                 </table>
@@ -267,5 +263,14 @@
         </div>
     </div>
     <!--/#wrapper-->
+
+    <script>
+        $(document).ready(function() {
+            $('#tblAtt').DataTable({
+                responsive: true,
+                "pageLength": 5
+            });
+        } );
+    </script>
 </body>
 </html>

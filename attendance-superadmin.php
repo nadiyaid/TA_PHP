@@ -132,13 +132,6 @@
                                 <a href="add-absen.php" id="hide" type="button" class="btn btn-checkin" name="checkin" onclick = "alert('Successfully recorded!')">Check-In</a>
                                 <a href="add-absen-out.php" onclick="checkout()" type="button" class="btn btn-danger btn-checkout" >Check-out</a>
 
-                                <?php 
-                                // $now = date('Y-m-d H:i:s');
-                                //     $new_time = date("Y-m-d H:i:s", strtotime('+5 minutes', strtotime($now)));
-                                //     echo $new_time;
-                                    // echo date('H:i:s', strtotime($new_time));
-                                ?>
-
                                 <script>
                                     function checkout(anchor) {
                                         var r = confirm("Are you sure want to checkout?");
@@ -190,6 +183,15 @@
                                         </tr>
                                         
                                     <?php
+                                            $keluar = $row['waktu_pulang'];
+                                            $time = $row['waktu_masuk'];
+                                            $current_time = date('H:i:s');
+
+                                            if($current_time >= date('H:i:s', strtotime($time.'+9 hours')) && $keluar == null){
+                                                $masuk = date('H:i:s', strtotime($row['waktu_masuk'].'+9 hours'));
+                                                $sql = "UPDATE absensi SET waktu_pulang = '$masuk', jam_kerja = TIMEDIFF(waktu_pulang, waktu_masuk), updated_at = CURRENT_TIMESTAMP WHERE waktu_pulang is null AND nip = '$_SESSION[id]'";
+                                                $update = mysqli_query($config, $sql) or die(mysqli_error($config));
+                                            }
                                         }
                                     ?>   
                                     </tbody>
