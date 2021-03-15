@@ -313,13 +313,23 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div id="popover-content" class="content">
-                    <ul class="list-group custom-popover">
-                        <li class="list-group-item"><a href="user.php">User 1</a></li>
-                        <li class="list-group-item">User 2</li>
-                        <li class="list-group-item">User 3</li>
-                    </ul>
-                </div> -->
+                <!-- should insert in details-task.php -->
+                <?php
+                    // if($config->connect_error){
+                    //     die("Connection failed: ".$config->connect_error);
+                    // }
+
+                    // $query = "SELECT task.*, karyawan.nama FROM task INNER JOIN karyawan ON task.nip = karyawan.nip WHERE task_id = '$row[task_id]'";
+                    // $query_run = mysqli_query($config, $query);
+                    // while($row = mysqli_fetch_array($query_run)){
+                ?>
+                <!-- <div class="timeline">
+                    <p style="line-height:0px;" class="pt-3"><?php echo $row['created_by'];?> created this task</p>
+                    <p class="tm"><?php echo $row['created_at']; ?></p>
+                    <p style="line-height:10px;" class="pt-3">You edited status to <?php echo $row['status']; ?></p>
+                    <p class="tm"><?php echo $row['updated_at']; ?></p> -->
+                </div>
+                <?php //} ?>
             </div>
         </div>
     </div>

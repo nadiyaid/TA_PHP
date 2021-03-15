@@ -139,8 +139,8 @@
                     </div>
                 </div>
                 <div class="row pt-4 pb-2">
-                    <div class="col-6">
-                        <div class="card approval">
+                    <div class="col-6 d-flex">
+                        <div class="card approval flex-fill">
                             <h6 class="card-header">Needs Approval</h6>
                             <div class="card-body pt-2">
                                 <div class="scrollable">
@@ -201,7 +201,7 @@
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $query = "SELECT request.*, karyawan.nama, karyawan.posisi FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval='decline' AND request.tanggal_request BETWEEN SUBDATE(CURDATE(), 7) AND CURDATE()";
+                                        $query = "SELECT request.*, karyawan.nama, karyawan.posisi FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE approval='decline' AND request.tanggal_request BETWEEN SUBDATE(CURDATE(), 7) AND CURDATE() OR approval='decline' AND DATE(request.updated_at) = CURDATE()";
                                         
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
@@ -211,7 +211,7 @@
                                             <td><text-muted><?php echo $row['posisi']; ?></text-muted></td>
                                             <td style="text-align:center;"><?php echo $row['keterangan']; ?></td>
                                             <td style="text-align:center;"><?php echo !isset($row['dari_tanggal']) ? '' : date("d/n/y",strtotime($row['dari_tanggal'])); ?> - <?php echo !isset($row['sampai_tanggal']) ? '' : date("d/n/y", strtotime($row['sampai_tanggal'])); ?>
-                                            <td class="details-btn" style="text-align:center;">
+                                            <td class="details-btn" style="text-align:end;">
                                                 <button data-toggle="modal" data-target="#appDecline<?php echo $row['request_id']; ?>" class="btn btn-info detbtn">Edit</button>
                                             </td>
                                         </tr>

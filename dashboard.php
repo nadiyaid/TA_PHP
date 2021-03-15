@@ -105,7 +105,7 @@
                         <div class="card informasi" style="border: none;">
                             <div class="card-header pt-4">
                                 <h5 class="card-title">Information</h5>
-                                <text-muted class="card-text">Infromasi mengenai karyawan yang sedang izin, cuti, dan WFH</text-muted>
+                                <text-muted class="card-text">Employee on leave or sick</text-muted>
                             </div>
                             <div class="card-body py-0 tabinfo">
                                 <table class="table table-hover">
@@ -160,7 +160,7 @@
                                                 die("Connection failed: ".$config->connect_error);
                                             }
 
-                                            $query = "SELECT * FROM task WHERE nip = '$_SESSION[id]'";
+                                            $query = "SELECT * FROM task WHERE nip = '$_SESSION[id]' AND status = 'undone'";
                                             $query_run = mysqli_query($config, $query);
                                             while($row = mysqli_fetch_array($query_run)){
                                         ?>
@@ -293,37 +293,42 @@
     </script>
 
     <script>
+        var months = ["jan", "feb", "mar", "apr", "mei", "jun", "jul", "ags", "sep", "okt", "nov", "des"]
+        
+        function dateData(days){
+            var d = new Date();
+            var tgl =  new Date (d.setDate(d.getDate()+(days)))
+            return tgl.getDate()+"-"+ months[tgl.getMonth()]
+        }
+
         var ctx = document.getElementById('bar').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['12/3','12/4', '12/5', '12/7', '12/8', '12/8'],
+                labels: [dateData(-4), dateData(-3), dateData(2), dateData(3), dateData(4), dateData(5)],
                 datasets: [{
                     label: "Undone",
-                    data: [2, 1, 3, 2, 5, 5],
+                    data: [1, 1, 2, 0, 1, 3],
                     backgroundColor: '#FF6A6A',
                     borderColor: '#FF6A6A',
                     borderWidth: 1
                 },
                 {
                     label: "Progress",
-                    data: [2, 1, 3, 2, 5, 5],
+                    data: [0, 1, 2, 1, 0, 2],
                     backgroundColor: 'rgba(255, 206, 86, 1)', //yellow
                     borderColor: 'rgba(255, 206, 86, 1)',
                     borderWidth: 1
                 },
                 {
                     label: "Done",
-                    data: [1, 0, 3, 1, 4, 5],
+                    data: [0, 1, 1, 1, 2, 1],
                     backgroundColor: 'rgba(76, 191, 143, 1)', //green
                     borderColor: 'rgba(76, 191, 143, 1)',
                     borderWidth: 1
                 }]
             },
             options: {
-                tooltips: {
-                    mode: 'index'
-                },
                 legend: {
                     display: true
                 },

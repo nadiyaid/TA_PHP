@@ -106,7 +106,17 @@
 
             <div class="user-content">
                 <div class="container-fluid">
-                    <div class="row py-3">
+                    <div class="row mt-2" style="justify-content:center;">
+                        <div class="col-5">
+                        <?php if(isset($_GET['success'])){ ?>
+                            <div class="alert alert-success alert-dismissible" style="position:absolute;z-index:10;margin:auto;">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <?php echo $_GET['success']; ?>
+                            </div>
+                         <?php } ?>
+                         </div>
+                    </div>
+                    <div class="row pt-2">                        
                         <div class="col-md-8 py-5">
                             <div class="card px-3">
                                 <div class="header">

@@ -110,7 +110,7 @@
                         <div class="card informasi" style="border: none;">
                             <div class="card-header pt-4">
                                 <h5 class="card-title">Information</h5>
-                                <text-muted class="card-text">Infromasi mengenai karyawan yang sedang izin, cuti, dan WFH</text-muted>
+                                <text-muted class="card-text">Employee on leave or sick</text-muted>
                             </div>
                             <div class="card-body py-0 tabinfo scrollable">
                                 <table class="table table-hover">
@@ -124,7 +124,7 @@
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal, request.approval FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve'";
+                                        $query = "SELECT karyawan.nama, karyawan.posisi, request.status_ketidakhadiran, request.keterangan, date_format(request.dari_tanggal, '%e/%c/%y') as dari_tanggal, date_format(request.sampai_tanggal, '%e/%c/%y')as sampai_tanggal, request.approval FROM request INNER JOIN karyawan ON request.nip=karyawan.nip WHERE request.approval='approve' AND request.dari_tanggal=CURDATE() or request.sampai_tanggal=CURDATE() or request.dari_tanggal is null or request.sampai_tanggal is null";
                                         $query_run = mysqli_query($config, $query);
                                         while($row = mysqli_fetch_array($query_run)){
                                     ?>
@@ -165,7 +165,7 @@
                                                 die("Connection failed: ".$config->connect_error);
                                             }
 
-                                            $query = "SELECT * FROM task WHERE nip = '$_SESSION[id]'";
+                                            $query = "SELECT * FROM task WHERE nip = '$_SESSION[id]' AND status = 'undone'";
                                             $query_run = mysqli_query($config, $query);
                                             while($row = mysqli_fetch_array($query_run)){
                                         ?>
@@ -295,6 +295,21 @@
     </script>
 
     <script>
+
+        <?php 
+            $tanggal = '';
+            $status = '';
+
+            $sql = mysqli_query($config, "SELECT * FROM task where nip = '$_SESSION[id]' AND status = 'undone'");
+            while($row = mysqli_fetch_array($sql)){
+                $rowtanggal = date('d-M', strtotime($row['start_date']));
+                $rowstatus = $row['status'];
+
+                $tanggal = $tanggal.'"'.$rowtanggal.'",';
+                $status = $status.$rowstatus.',';
+            }
+        ?>        
+        
         var months = ["jan", "feb", "mar", "apr", "mei", "jun", "jul", "ags", "sep", "okt", "nov", "des"]
         
         function dateData(days){
@@ -303,85 +318,75 @@
             return tgl.getDate()+"-"+ months[tgl.getMonth()]
         }
 
-       var barChartData = {
-        labels: [dateData(-4), dateData(-3), dateData(2), dateData(3), dateData(4), dateData(5)],
-        datasets: [
-            {
-            label: "Undone",
-            backgroundColor: "#FF6A6A",
-            borderColor: "#FF6A6A",
-            borderWidth: 1,
-            data: [
-                <?php
-                $undone = mysqli_query($config, "select status from task where nip = '$_SESSION[id]' AND status = 'undone'");
-                echo mysqli_num_rows($undone);
-                ?>
+        var barChartData = {
+            // labels: [dateData(-4), dateData(-3), dateData(2), dateData(3), dateData(4), dateData(5)],
+            labels: [<?php echo $tanggal; ?>],
+            datasets: [
+                {
+                label: "Undone",
+                backgroundColor: "#FF6A6A",
+                borderColor: "#FF6A6A",
+                borderWidth: 1,
+                data: [<?php echo mysqli_num_rows($sql); ?>]
+                },
+                {
+                label: "Progress",
+                backgroundColor: "rgba(255, 206, 86, 1)",
+                borderColor: "rgba(255, 206, 86, 1)",
+                borderWidth: 1,
+                data: [<?php echo mysqli_num_rows($sql); ?>]
+                },
+                {
+                label: "Done",
+                backgroundColor: "rgba(76, 191, 143, 1)",
+                borderColor: "rgba(76, 191, 143, 1)",
+                borderWidth: 1,
+                data: [<?php echo mysqli_num_rows($sql); ?>]
+                }
             ]
-            },
-            {
-            label: "Progress",
-            backgroundColor: "rgba(255, 206, 86, 1)",
-            borderColor: "rgba(255, 206, 86, 1)",
-            borderWidth: 1,
-            data: [
-                <?php
-                $progress = mysqli_query($config, "select status from task where nip = '$_SESSION[id]' AND status = 'progress'");
-                echo mysqli_num_rows($progress);
-                ?>
-                ]
-            },
-            {
-            label: "Done",
-            backgroundColor: "rgba(76, 191, 143, 1)",
-            borderColor: "rgba(76, 191, 143, 1)",
-            borderWidth: 1,
-            data: [
-                <?php
-                $done = mysqli_query($config, "select status from task where nip = '$_SESSION[id]' AND status = 'done'");
-                echo mysqli_num_rows($done);
-                ?>
-            ]
-            }
-        ]
         };
 
         var chartOptions = {
-        responsive: true,
-        legend: {
-            position: "top"
-            // display:false
-        },
-        title: {
-            display: false,
-            text: ""
-        },
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    display: false
-                },
-                // type: 'time',
-                // time: {
-                //     displayFormats: {
-                //         day: 'D'
-                //     }
-                // }
-            }],
-            yAxes: [{
-            ticks: {
-                beginAtZero: true
+            responsive: true,
+            legend: {
+                position: "top"
+                // display:false
+            },
+            title: {
+                display: false,
+                text: ""
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    },
+                    barPercentage: 0.2,
+                    ticks: {
+                        maxTicksLimit: 6
+                    }
+                    // type: 'time',
+                    // time: {
+                    //     displayFormats: {
+                    //         day: 'D'
+                    //     }
+                    // }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
             }
-            }]
-        }
         }
 
         window.onload = function() {
-        var ctx = document.getElementById("bar").getContext("2d");
-        window.myBar = new Chart(ctx, {
-            type: "bar",
-            data: barChartData,
-            options: chartOptions
-        });
+            var ctx = document.getElementById("bar").getContext("2d");
+            window.myBar = new Chart(ctx, {
+                type: "bar",
+                data: barChartData,
+                options: chartOptions
+            });
         };
     </script>
 </body>

@@ -122,7 +122,7 @@
                         <div class="card informasi" style="border: none;">
                             <div class="card-header pt-4">
                                 <h5 class="card-title">Information</h5>
-                                <text-muted class="card-text">Infromasi mengenai karyawan yang sedang izin, cuti, dan WFH</text-muted>
+                                <text-muted class="card-text">Employee on leave or sick</text-muted>
                             </div>
                             <div class="card-body py-0 tabinfo">
                                 <table class="table table-hover approved">
@@ -159,8 +159,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-5 pl-1">
-                        <div class="card approval">
+                    <div class="col-5 pl-1 d-flex">
+                        <div class="card approval flex-fill">
                             <h6 class="card-header">Needs Approval</h6>
                             <div class="card-body pt-2">
                                 <div class="scrollable">

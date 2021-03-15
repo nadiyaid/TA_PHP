@@ -23,7 +23,7 @@
                         <p class="tooltip-test" title="Task Description"><?php echo $row['deskripsi']; ?></p>
                         <div class="comment">
                             <label>Comment</label>
-                            <textarea class="form-control" readonly></textarea>
+                            <textarea class="form-control" readonly><?php echo $row['comment']; ?></textarea>
                         </div>
                         <div class="progbar">Progress</div>
                         <div class="progress">
@@ -48,8 +48,9 @@
                                             <?php echo date("H:i", strtotime($row['end_time']));?></p>
                                     </div>
                                 </div>
-                            </div>
+                            </div>                            
                         </div>
+                        <!-- insert timeline down here -->
                     </div>
                 </div>
             </div>                        

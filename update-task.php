@@ -150,7 +150,7 @@
                                     </div>
                                     <div class="comment">
                                         <label>Comment</label>
-                                        <textarea class="form-control" placeholder="Updated task details (optional)" name="comment"></textarea>
+                                        <textarea class="form-control" placeholder="Updated task details (optional)" name="comment"><?php echo $row['comment'];?></textarea>
                                     </div>
                                     <div class="update-progress d-flex py-2">
                                         <label class="pr-2">Progress :</label>
