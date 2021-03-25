@@ -190,18 +190,18 @@
                     </div>
                 </div>
                 <div class="row pb-2">
-                    <div class="col-6 pt-2 d-flex">
+                    <div class="col-5 pt-2 d-flex">
                         <div class="card card-body color-card admin">
                             <div class="card-body chart">
                                 <h6 class="card-title py-0">Attendance</h6>
                                 <text-muted>Your attendance recap in the last 30 days</text-muted>                                
                             </div>
                             <div class="divchart">
-                                <canvas id="pie" height="100" width="200"></canvas>
+                                <canvas id="pie" height="100" width="150"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 pt-2 d-flex pl-1">
+                    <div class="col-7 pt-2 d-flex pl-1">
                         <div class="card card-body color-card admin">
                             <div class="card-body chart">
                                 <h6 class="card-title py-0">Tasks Progress</h6>
@@ -330,6 +330,7 @@
             },
             options: {
                 legend: {
+                    position: "bottom",
                     display: true
                 },
                 title:{

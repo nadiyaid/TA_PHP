@@ -117,7 +117,7 @@
                                     <div class="maintext">Request</div>
                                     <div class="subtext">for paid leave</div>
                                 </a>
-                                <a href="add-absen-admin.php" id="hide" type="button" class="btn btn-checkin" name="checkin" onclick="alert('Successfully recorded!')">Check-In</a>
+                                <a href="add-absen-admin.php" id="hide" type="button" class="btn btn-checkin" name="checkin">Check-In</a>
                                 <a href="add-absen-out-admin.php" type="button" class="btn btn-danger btn-checkout" onclick="checkout()">Check-out</a>
                                 
                                 <script>
@@ -161,7 +161,7 @@
                                     ?>
                                         <tr>
                                             <td><?php $tgl = $row['tanggal'];
-                                                echo date("D, d-M", strtotime($tgl));
+                                                echo date("d-M", strtotime($tgl));
                                                 ?>
                                             </td>
                                             <td><?php echo $row['waktu_masuk']; ?></td>

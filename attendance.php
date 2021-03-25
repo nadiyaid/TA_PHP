@@ -112,14 +112,9 @@
                                     <div class="maintext">Request</div>
                                     <div class="subtext">for paid leave</div>
                                 </a>
-                                <a href="add-absen-user.php" id="checkin" type="button" class="btn btn-checkin" name="checkin" onClick = "checkin()">Check-In</a>
+                                <a href="add-absen-user.php" id="checkin" type="button" class="btn btn-checkin" name="checkin">Check-In</a>
                                 <a href="add-absen-out-user.php" id="checkout" type="button" class="btn btn-danger btn-checkout" onClick="javascript:checkout($(this));return false;">Check-out</a>
-
-                                <script>
-                                    function checkin(){
-                                        alert ("Successfully recorded!");
-                                    }
-                                </script>
+                                
                                 <script>
                                     function checkout(anchor) {
                                         var r = confirm("Are you sure want to checkout?");
@@ -161,7 +156,7 @@
                                     ?>
                                             <tr>
                                                 <td><?php $tgl = $row['tanggal'];
-                                                    echo date("D, d-M", strtotime($tgl));
+                                                    echo date("d-M", strtotime($tgl));
                                                     ?>
                                                 </td>
                                                 <td><?php echo $row['waktu_masuk']; ?></td>

@@ -190,18 +190,18 @@
                     </div>
                 </div>
                 <div class="row pb-2">
-                    <div class="col-6 pt-2 d-flex">
+                    <div class="col-5 pt-2 d-flex">
                         <div class="card card-body color-card admin">
                             <div class="card-body chart">
                                 <h6 class="card-title py-0">Attendance</h6>
                                 <text-muted>Your attendance recap in the last 30 days</text-muted>                                
                             </div>
                             <div class="divchart">
-                                <canvas id="pie" height="100" width="200"></canvas>
+                                <canvas id="pie" height="100" width="150"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 pt-2 d-flex pl-1">
+                    <div class="col-7 pt-2 d-flex pl-1">
                         <div class="card card-body color-card admin">
                             <div class="card-body chart">
                                 <h6 class="card-title py-0">Tasks Progress</h6>
@@ -243,55 +243,55 @@
 
     <script>
         // Pie Chart
-                var ctx = document.getElementById('pie').getContext('2d');
-                var chart = new Chart(ctx, {
-                    // The type of chart we want to create
-                    type: 'pie',
-                    backgroundColor: '#6a6a6a',
-                
-                    // The data for our dataset
-                    data: {
-                        labels: ['hadir', 'izin', 'sakit', 'cuti', 'unpaid'],
-                        datasets: [{
-                            label: 'Absensi',
-                            data: [
-                            <?php
-                            $hadir = mysqli_query($config, "select waktu_masuk from absensi where nip = '$_SESSION[id]'");
-                            echo mysqli_num_rows($hadir);
-                            ?>,
+        var ctx = document.getElementById('pie').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'pie',
+            backgroundColor: '#6a6a6a',
+        
+            // The data for our dataset
+            data: {
+                labels: ['hadir', 'izin', 'sakit', 'cuti', 'unpaid'],
+                datasets: [{
+                    label: 'Absensi',
+                    data: [
+                    <?php
+                    $hadir = mysqli_query($config, "select waktu_masuk from absensi where nip = '$_SESSION[id]'");
+                    echo mysqli_num_rows($hadir);
+                    ?>,
 
-                            <?php
-                            $izin = mysqli_query($config, "select * from request where status_ketidakhadiran = '1' and nip = '$_SESSION[id]'");
-                            echo mysqli_num_rows($izin);
-                            ?>,
+                    <?php
+                    $izin = mysqli_query($config, "select * from request where status_ketidakhadiran = '1' and nip = '$_SESSION[id]'");
+                    echo mysqli_num_rows($izin);
+                    ?>,
 
-                            <?php
-                            $sakit = mysqli_query($config, "select * from request where status_ketidakhadiran = '2' and nip = '$_SESSION[id]'");
-                            echo mysqli_num_rows($sakit);
-                            ?>,
+                    <?php
+                    $sakit = mysqli_query($config, "select * from request where status_ketidakhadiran = '2' and nip = '$_SESSION[id]'");
+                    echo mysqli_num_rows($sakit);
+                    ?>,
 
-                            <?php
-                            $cuti = mysqli_query($config, "select * from request where status_ketidakhadiran = '3' and nip = '$_SESSION[id]'");
-                            echo mysqli_num_rows($cuti);
-                            ?>
-                            ],
-                            backgroundColor: ['#79D2DE','#FFC83A','#f7f725','#A660FF','#FF6A6A'],
-                            borderColor: ['#79D2DE','#FFC83A','#f7f725','#A660FF','#FF6A6A']
-                        }]
-                    },
-                
-                    // Configuration options go here
-                    options: {
-                        legend:{
-                            display: true,
-                            position: 'bottom',
-                            labels:{
-                                fontSize: 11,
-                                boxWidth: 10,
-                            }
-                        }
+                    <?php
+                    $cuti = mysqli_query($config, "select * from request where status_ketidakhadiran = '3' and nip = '$_SESSION[id]'");
+                    echo mysqli_num_rows($cuti);
+                    ?>
+                    ],
+                    backgroundColor: ['#79D2DE','#FFC83A','#f7f725','#A660FF','#FF6A6A'],
+                    borderColor: ['#79D2DE','#FFC83A','#f7f725','#A660FF','#FF6A6A']
+                }]
+            },
+        
+            // Configuration options go here
+            options: {
+                legend:{
+                    display: true,
+                    position: 'bottom',
+                    labels:{
+                        fontSize: 11,
+                        boxWidth: 10,
                     }
-                });
+                }
+            }
+        });
     </script>
 
     <script>
@@ -349,7 +349,7 @@
         var chartOptions = {
             responsive: true,
             legend: {
-                position: "top"
+                position: "bottom"
                 // display:false
             },
             title: {

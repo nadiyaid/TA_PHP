@@ -177,7 +177,7 @@
                                     ?>
                                         <tr>
                                             <td><?php $tgl = $row['tanggal'];
-                                                echo date("D, d-M", strtotime($tgl));
+                                                echo date("d-M", strtotime($tgl));
                                                 ?>
                                             </td>
                                             <td><?php echo $row['waktu_masuk']; ?></td>
